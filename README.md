@@ -40,6 +40,11 @@ For easier developing you can launch the app in fullscreen with DevTools open:
 ```bash
 $ npm run dev
 ```
+Package the application for windows using:
+
+```bash
+$ npm run package:win
+```
 
 ## Extending
 
