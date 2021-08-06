@@ -1,67 +1,200 @@
 <template class="task-template">
   <section id="crash-hang-section" class="section js-section u-category-windows">
+    <style>
+      #system-monitor-table td {
+        border: none
+      }
+
+      #debug-console-table td {
+        border: none
+      }
+    </style>
     <header class="section-header">
       <div class="section-wrapper">
-        <h1>
-          <svg class="section-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-          Handling Window Crashes and Hangs
-        </h1>
-        <h3>The <code>BrowserWindow</code> module will emit events when the renderer process crashes or hangs. You can listen for these events and give users the chance to reload, wait or close that window.</h3>
-
-        <p>Open the <a href="http://electron.atom.io/docs/api/browser-window">full API documentation<span class="u-visible-to-screen-reader">(opens in new window)</span></a> in your browser.</p>
+        <h2>
+          <svg class="section-icon">
+            <use xlink:href="assets/img/icons.svg#icon-windows"></use>
+          </svg>
+          <strong>System Validator</strong>
+        </h2>
       </div>
     </header>
 
+
     <div class="demo">
       <div class="demo-wrapper">
-        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Relaunch window after the process crashes
-          <div class="demo-meta u-avoid-clicks">Supports: Win, macOS, Linux <span class="demo-meta-divider">|</span> Process: Main</div>
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">System Monitor
         </button>
         <div class="demo-box">
           <div class="demo-controls">
-            <button class="demo-button" id="process-crash">View Demo</button>
-          </div>
-          <p>In this demo we create a new window (via the <code>remote</code> module) and provide a link that will force a crash using <code>process.crash()</code>.</p>
-          <p>The window is listening for the crash event and when the event occurs it prompts the user with two options: reload or close.</p>
 
-          <h5>Renderer Process</h5>
-          <pre><code data-path="renderer-process/windows/process-crash.js"></code></pre>
+            <table id="system-monitor-table">
+
+              <tr>
+                <td>
+                  <table>
+                    <tr>
+                      <td>Connect Collector</td>
+                      <td>
+                        <button class="demo-button" id="port-0-btn" >Connect</button>
+                      </td>
+                      <td><input list="ports" name="port" id="port-0" class="demo-input" value="5" title="Collector COM"
+                          placeholder="Collector COM Port" required></td>
+                      <td><input list="baurdrates" name="baurdrate" id="baudrate-0" class="demo-input" value="115200"
+                          placeholder="Baudrate" title="Baudrate"></td>
+                    </tr>
+
+                    <tr>
+                      <td>Toggle led of given node</td>
+                      <td><button class="demo-button" id="indentify-node-btn">Indentify</button></td>
+                      <td>
+                        <input list="nodeAddrs" name="nodeAddr" id="identify-node-addr" class="demo-input" value=""
+                          placeholder="Node address" required title="Node address">
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>Blink led of all sensors (exclude routers)</td>
+                      <td><button class="demo-button" id="blink-nodes-btn">Start</button></td>
+                      <td><input id="blink-nodes-period" class="demo-input" placeholder="Period (ms)"
+                          title="Period (ms)" required value="3000"></td>
+                    </tr>
+
+                    <tr>
+                      <td >Test Packet Loss</td>
+                      <td><button class=" demo-button" id="start-packet-loss-btn">Start</button></td>
+                      <td><input id="test-paclet-loss-packet-size" class="demo-input" placeholder="Packet Size"
+                        title="Packet Size" required value="100"></td>
+                        <td><input id="test-paclet-loss-packet-num" class="demo-input" placeholder="Number of Packets"
+                          title="Number of Packets" required value="30"></td>
+                          <td><input id="test-paclet-loss-period" class="demo-input" placeholder="Period (ms)"
+                              title="Period (ms)" required value="3000"></td>
+                    </tr>
+
+                  </table>
+                </td>
+              </tr>
+              <tr>
+              </tr>
+
+              <tr>
+                <td>
+                  <table id="system-tree-table" style="width:100%;">
+                    <caption><strong> System Tree</strong></caption>
+                  </table><br>
+                </td>
+              </tr>
+
+              <tr>
+                <td><strong>Data From Network</strong> (
+                  <input type="checkbox" id="show-raw-data" checked> Show Raw Data From Sensors )
+                  <textarea rows="15" style="width:100%; border: none; outline: none;" id="port-0-screen"></textarea></td>
+              </tr>
+
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="demo">
       <div class="demo-wrapper">
-        <button id="new-window-hangs-demo-toggle" class="js-container-target demo-toggle-button">Relaunch window after the process hangs
-          <div class="demo-meta u-avoid-clicks">Supports: Win, macOS, Linux <span class="demo-meta-divider">|</span> Process: Main</div>
+        <button id="new-window-crashes-demo-toggle-1" class="js-container-target demo-toggle-button">Debug Console
         </button>
         <div class="demo-box">
           <div class="demo-controls">
-            <button class="demo-button" id="process-hang">View Demo</button>
-          </div>
-          <p>In this demo we create a new window (via the <code>remote</code> module) and provide a link that will force the process to hang using <code>process.hang()</code>.</p>
-          <p>The window is listening for the process to become officially unresponsive (this can take up to 30 seconds). When this event occurs it prompts the user with two options: reload or close.</p>
 
-          <h5>Renderer Process</h5>
-          <pre><code data-path="renderer-process/windows/process-hang.js"></code></pre>
+            <table style="width:100%; border:none; outline: none; border-collapse: collapse;" id="debug-console-table">
 
-          <div class="demo-protip">
-            <h2>ProTip</h2>
-            <strong>Wait for the process to become responsive again.</strong>
-            <p>A third option in the case of a process that is hanging is to wait and see if the problem resolves, allowing the process to become responsive again. To do this, use the <code>BrowserWindow</code> event 'responsive' as shown below.</p>
-            <pre><code class="language-js">win.on('responsive', function () {
-  // Do something when the window is responsive again
-})</code></pre>
+              <tr>
+                <td>
+                  <input list="ports" name="port" id="port-1" class="demo-input" value="17" placeholder="Port Number">
+                </td>
+                <td>
+                  <input list="baurdrates" name="baurdrate" id="baudrate-1" class="demo-input" value="115200"
+                    placeholder="Baudrate">
+                </td>
+                <td> <button class="demo-button" id="port-1-btn">Connect</button>
+                </td>
+                <td>
+                  <input list="ports" name="port" id="port-2" class="demo-input" value="7" placeholder="Port Number">
+                </td>
+                <td>
+                  <input list="baurdrates" name="baurdrate" id="baudrate-2" class="demo-input" value="115200"
+                    placeholder="Baudrate">
+                </td>
+                <td> <button class="demo-button" id="port-2-btn">Connect</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                    id="port-1-screen"></textarea></td>
+                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                    id="port-2-screen"></textarea></td>
+              </tr>
+
+
+              <tr>
+                <td>
+                  <input list="ports" name="port" id="port-3" class="demo-input" value="9" placeholder="Port Number">
+                </td>
+                <td>
+                  <input list="baurdrates" name="baurdrate" id="baudrate-3" class="demo-input" value="115200"
+                    placeholder="Baudrate">
+                </td>
+                <td> <button class="demo-button" id="port-3-btn">Connect</button>
+                </td>
+                <td>
+                  <input list="ports" name="port" id="port-4" class="demo-input" value="11" placeholder="Port Number">
+                </td>
+                <td>
+                  <input list="baurdrates" name="baurdrate" id="baudrate-4" class="demo-input" value="115200"
+                    placeholder="Baudrate">
+                </td>
+                <td> <button class="demo-button" id="port-4-btn">Connect</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                    id="port-3-screen"></textarea></td>
+                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                    id="port-4-screen"></textarea></td>
+              </tr>
+
+
+            </table>
+
+            <datalist id="baurdrates">
+              <option value="115200">
+              <option value="9600">
+            </datalist>
+
+            <datalist id="ports">
+              <option value="0">
+              <option value="1">
+              <option value="2">
+              <option value="3">
+              <option value="4">
+              <option value="5">
+            </datalist>
+
+            <datalist id="nodeAddrs">
+              <option value="0x32">
+              <option value="0x12">
+              <option value="0x13">
+              <option value="0x14">
+              <option value="0x14">
+              <option value="0x5">
+            </datalist>
+
           </div>
         </div>
+
       </div>
     </div>
-
-
 
     <script type="text/javascript">
-      require('./renderer-process/windows/process-crash')
-      require('./renderer-process/windows/process-hang')
+      require('./renderer-process/windows/serial-handler')
     </script>
 
   </section>

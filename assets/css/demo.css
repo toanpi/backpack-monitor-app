@@ -14,9 +14,9 @@
 
 .demo-wrapper {
   position: relative;
-  max-width: 740px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 
@@ -30,7 +30,7 @@
   line-height: 1.5;
   font: inherit;
   font-weight: 600;
-  font-size: 1.2em;
+  font-size: 1em;
   text-align: left;
   border: none;
   color: inherit;
@@ -143,12 +143,33 @@
   padding: .4em 1.2em;
   color: inherit;
   background-color: transparent;
+  width: 120px;
 }
 .demo-button:focus {
   outline: none;
   background-color: white;
 }
 .demo-button:active {
+  border-color: var(--color-border);
+}
+
+.demo-select{
+  align-self: flex-start;
+  margin-right: 1em;
+  border: 2px solid;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 1.2em;
+  padding: .4em 1.2em;
+  color: hsl(222, 53%, 50%);
+  background-color: transparent;
+}
+.demo-select:focus {
+  outline: none;
+  background-color: white;
+}
+
+.demo-select:active {
   border-color: var(--color-border);
 }
 

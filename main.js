@@ -2,6 +2,13 @@ require('update-electron-app')({
   logger: require('electron-log')
 })
 
+
+module.exports = { sendRenderRequest }
+
+
+// Enable live reload for all the files inside your project directory
+require('electron-reload')(__dirname);
+
 const path = require('path')
 const glob = require('glob')
 const {app, BrowserWindow} = require('electron')
@@ -35,10 +42,11 @@ function initialize () {
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
+    mainWindow.maximize()
+  
     // Launch fullscreen with DevTools open, usage: npm run debug
     if (debug) {
       mainWindow.webContents.openDevTools()
-      mainWindow.maximize()
       require('devtron').install()
     }
 
@@ -89,5 +97,14 @@ function loadDemos () {
   const files = glob.sync(path.join(__dirname, 'main-process/**/*.js'))
   files.forEach((file) => { require(file) })
 }
+
+
+function sendRenderRequest(topic, data) {
+  if(mainWindow)
+  {
+    mainWindow.webContents.send(topic, data);
+  }
+}
+
 
 initialize()

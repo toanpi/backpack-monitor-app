@@ -28,7 +28,7 @@ code {
 /* Buttons and links */
 
 button{
-  cursor: default;
+  cursor: pointer;
 }
 
 /* Internal links */

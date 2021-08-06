@@ -1,7 +1,7 @@
 /* Nav */
 
 .nav {
-  width: 340px;
+  width: 150px;
   overflow-x: hidden;
   overflow-y: auto;
   color: var(--color-subtle);
