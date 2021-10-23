@@ -1,11 +1,11 @@
 /* Nav */
 
 .nav {
-  width: 150px;
+  width: 175px;
   overflow-x: hidden;
   overflow-y: auto;
   color: var(--color-subtle);
-  border-right: 1px solid var(--color-border);
+  /* border-right: 1px solid var(--color-border); */
   background-color: var(--color-bg);
   visibility: hidden;
   opacity: 0;
@@ -75,7 +75,7 @@
   color: inherit;
   border: none;
   background-color: transparent;
-  cursor: default;
+  cursor: pointer;
   outline: none;
 }
 .nav-button:hover,
@@ -100,11 +100,21 @@
   pointer-events: none; /* makes it invisible to clicks */
 }
 
+.nav-button em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-strong);
+  pointer-events: none; /* makes it invisible to clicks */
+}
+
 .nav-footer {
-  margin-top: 1rem;
-  padding: 2rem;
-  border-top: 1px solid var(--color-border);
+  padding: 1rem;
+  /* border-top: 1px solid var(--color-border); */
   text-align: center;
+  bottom: 0;
+  width: 175px;
+  position: absolute;
+  background-color: var(--color-bg);
 }
 
 .nav-footer-icon {
@@ -128,7 +138,7 @@
   color: inherit;
   border: none;
   background-color: transparent;
-  cursor: default;
+  cursor: pointer;
   outline: none;
   text-align: center;
 }

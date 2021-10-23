@@ -21,7 +21,8 @@ html {
   line-height: 1.5;
   overflow: hidden; /* Prevents rubber-band scrolling of the whole "page" */
   color: var(--color);
-  background-color: #fff; /* To cover OSes with no default background color */
+  /* background-color: #fff; */
+  background-color: var(--color-body-bg);
 }
 
 body {
