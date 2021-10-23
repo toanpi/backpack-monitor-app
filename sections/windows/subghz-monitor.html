@@ -1,5 +1,5 @@
 <template class="task-template">
-  <section id="crash-hang-section" class="section js-section u-category-windows">
+  <section id="subghz-monitor-section" class="section js-section u-category-windows">
     <style>
       #system-monitor-table td {
         border: none
@@ -15,14 +15,14 @@
           <svg class="section-icon">
             <use xlink:href="assets/img/icons.svg#icon-windows"></use>
           </svg>
-          <strong>System Validator</strong>
+          <strong>SubGhz Network Monitor</strong>
         </h2>
       </div>
     </header>
 
 
     <div class="demo">
-      <div class="demo-wrapper">
+      <div class="demo-wrapper is-open">
         <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">System Monitor
         </button>
         <div class="demo-box">
@@ -45,8 +45,8 @@
                     </tr>
 
                     <tr>
-                      <td>Toggle led of given node</td>
-                      <td><button class="demo-button" id="indentify-node-btn">Indentify</button></td>
+                      <td>Toggle Node Led</td>
+                      <td><button class="demo-button" id="indentify-node-btn">Toggle</button></td>
                       <td>
                         <input list="nodeAddrs" name="nodeAddr" id="identify-node-addr" class="demo-input" value=""
                           placeholder="Node address" required title="Node address">
@@ -54,7 +54,7 @@
                     </tr>
 
                     <tr>
-                      <td>Blink led of all sensors (exclude routers)</td>
+                      <td>Blink Sensors Led</td>
                       <td><button class="demo-button" id="blink-nodes-btn">Start</button></td>
                       <td><input id="blink-nodes-period" class="demo-input" placeholder="Period (ms)"
                           title="Period (ms)" required value="3000"></td>
@@ -88,7 +88,7 @@
               <tr>
                 <td><strong>Data From Network</strong> (
                   <input type="checkbox" id="show-raw-data" checked> Show Raw Data From Sensors )
-                  <textarea rows="15" style="width:100%; border: none; outline: none;" id="port-0-screen"></textarea></td>
+                  <textarea class="demo-textarea" rows="15" style="width:100%; border: none; outline: none;" id="port-0-screen"></textarea></td>
               </tr>
 
             </table>
@@ -127,9 +127,9 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
                     id="port-1-screen"></textarea></td>
-                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
                     id="port-2-screen"></textarea></td>
               </tr>
 
@@ -155,9 +155,9 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
                     id="port-3-screen"></textarea></td>
-                <td colspan="3"><textarea rows="10" style="width:100%; border: none; outline: none;"
+                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
                     id="port-4-screen"></textarea></td>
               </tr>
 

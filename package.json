@@ -1,8 +1,8 @@
 {
-  "name": "electron-api-demos",
-  "productName": "BackpackApp",
+  "name": "backpack-network-app",
+  "productName": "Backpack Network Monitor",
   "version": "2.0.2",
-  "description": "Electron interactive API demos",
+  "description": "Backpack Network Monitor",
   "main": "main.js",
   "bin": "cli.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "generate-test-report": "mocha --reporter=json > report.json",
     "package": "npm-run-all package:*",
     "package:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/app-icon/mac/app.icns --osx-sign.identity='Developer ID Application: GitHub' --extend-info=assets/mac/info.plist",
-    "package:win": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/app-icon/win/app.ico",
+    "package:win": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/app-icon/win/app_icon.ico",
     "package:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --out=out",
     "package:sign-exe": "signcode './out/Electron API Demos-win32-ia32/Electron API Demos.exe' --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'http://electron.atom.io'",
     "package:installer": "node ./script/installer.js",
@@ -57,6 +57,7 @@
     "electron-reload": "^2.0.0-alpha.1",
     "electron-settings": "^3.0.7",
     "electron-shortcut-normalizer": "^1.0.0",
+    "electron-store": "^8.0.1",
     "glob": "^7.1.0",
     "highlight.js": "^10.4.1",
     "iconv-lite": "^0.6.3",

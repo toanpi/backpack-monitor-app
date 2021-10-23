@@ -116,7 +116,7 @@ SerialPort.list().then(function(ports){
   var portList = []
 
   ports.forEach(function(port){
-    // console.log("Port: ", port);
+    console.log("Port: ", port);
     portList.push(port.path.replace( /^\D+/g, ''))
   })
 

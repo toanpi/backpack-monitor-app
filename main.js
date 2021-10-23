@@ -5,9 +5,18 @@ require('update-electron-app')({
 
 module.exports = { sendRenderRequest }
 
+const Store = require('electron-store');
+Store.initRenderer()
 
-// Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname);
+
+require("electron-reload")(__dirname, {
+  ignored: [
+    /node_modules|[/\\]\./,
+    /main-process|[/\\]\./,
+    /database|[/\\]\./,
+    /main.js/,
+  ],
+});  
 
 const path = require('path')
 const glob = require('glob')
@@ -15,7 +24,7 @@ const {app, BrowserWindow} = require('electron')
 
 const debug = /--debug/.test(process.argv[2])
 
-if (process.mas) app.setName('Electron APIs')
+if (process.mas) app.setName('Backpack Network App')
 
 let mainWindow = null
 
@@ -26,8 +35,9 @@ function initialize () {
 
   function createWindow () {
     const windowOptions = {
-      width: 1080,
-      minWidth: 680,
+      icon: path.join(__dirname, 'assets/app-icon/win/app_icon.ico'),
+      width: 1300,
+      minWidth: 1000,
       height: 840,
       title: app.getName(),
       webPreferences: {
@@ -42,7 +52,7 @@ function initialize () {
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
-    mainWindow.maximize()
+    // mainWindow.maximize()
   
     // Launch fullscreen with DevTools open, usage: npm run debug
     if (debug) {

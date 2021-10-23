@@ -1,0 +1,32 @@
+<template class="task-template">
+  <section id="camera-section" class="section js-section u-category-menu">
+    <header class="section-header">
+      <div class="section-wrapper">
+        <h2>
+          <svg class="section-icon">
+            <use xlink:href="assets/img/icons.svg#icon-menu"></use>
+          </svg>
+          <strong>Camera</strong>
+        </h2>
+      </div>
+    </header>
+
+
+    <div class="demo">
+      <div class="demo-wrapper is-open">
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">FLir Camera
+        </button>
+        <div class="demo-box">
+          <div class="demo-controls">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      require('./renderer-process/windows/serial-handler')
+    </script>
+
+  </section>
+</template>

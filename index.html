@@ -13,44 +13,38 @@
   <link rel="stylesheet" href="assets/css/github.css">
 
   <link rel="import" href="sections/about.html">
-  <link rel="import" href="sections/windows/windows.html">
-  <link rel="import" href="sections/windows/crash-hang.html">
-  <link rel="import" href="sections/menus/menus.html">
-  <link rel="import" href="sections/menus/shortcuts.html">
-  <link rel="import" href="sections/native-ui/ex-links-file-manager.html">
-  <link rel="import" href="sections/native-ui/notifications.html">
-  <link rel="import" href="sections/native-ui/dialogs.html">
-  <link rel="import" href="sections/native-ui/tray.html">
-  <link rel="import" href="sections/native-ui/drag.html">
-  <link rel="import" href="sections/communication/ipc.html">
-  <link rel="import" href="sections/system/app-sys-information.html">
-  <link rel="import" href="sections/system/clipboard.html">
-  <link rel="import" href="sections/system/protocol-handler.html">
-  <link rel="import" href="sections/media/desktop-capturer.html">
+  <link rel="import" href="sections/windows/subghz-monitor.html">
+  <link rel="import" href="sections/windows/camera.html">
 </head>
 <body>
 
+<style>
+  ::-webkit-scrollbar {
+    display: none
+  }
+</style>
+  
   <nav class="nav js-nav">
     <header class="nav-header">
-      <h1 class="nav-title">Backpacks <strong>Monitor</strong></h1>
+      <h1 class="nav-title">Backpack <strong>Network</strong></h1>
     </header>
 
     <div class="nav-item u-category-windows">
       <h5 class="nav-category">
         <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Monitor
+        <strong>Monitor</strong>
       </h5>
-      <button type="button" id="button-windows" data-section="crash-hang" class="nav-button">System Test</button>
+      <button type="button" id="button-windows" data-section="subghz-monitor" class="nav-button">SubGhz Monitor</button>
     </div>
 
-    <!-- <div class="nav-item u-category-menu">
+    <div class="nav-item u-category-menu">
       <h5 class="nav-category">
         <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-menu"></use></svg>
-        Menus
+        <strong>Validation</strong>
       </h5>
-      <button type="button" id="button-menus" data-section="menus" class="nav-button">Customize <em>menus</em> </button>
-      <button type="button" id="button-shortcuts" data-section="shortcuts" class="nav-button">Register keyboard <em>shortcuts</em></button>
-    </div> -->
+      <button type="button" id="button-camera" data-section="camera" class="nav-button"> Camera</button>
+      <!-- <button type="button" id="button-shortcuts" data-section="shortcuts" class="nav-button">Register keyboard <em>shortcuts</em></button> -->
+    </div>
 
     <!-- <div class="nav-item u-category-native-ui">
       <h5 class="nav-category">
@@ -90,10 +84,12 @@
     </div> -->
 
     <footer class="nav-footer">
+      <svg id="dark-mode-icon" class="nav-icon" style="cursor: pointer"><use xlink:href="assets/img/icons.svg#icon-moon"></use></svg>
+      &nbsp;
+      &nbsp;
+      <svg id="light-mode-icon" class="nav-icon" style="cursor: pointer"><use xlink:href="assets/img/icons.svg#icon-sun"></use></svg>
+      <br><br>
       <button type="button" id="button-about" data-modal="about" class="nav-footer-button">About</button>
-      <!-- <a class="nav-footer-logo" href="https://github.com" aria-label="Homepage">
-        <svg class="nav-footer-icon"><use xlink:href="assets/img/icons.svg#icon-love"></use></svg>
-      </a> -->
     </footer>
   </nav>
 
@@ -106,6 +102,7 @@
     require('./assets/demo-btns')
     require('./assets/code-blocks')
     require('./assets/normalize-shortcuts')
+    require('./renderer-process/system/app-settings')
   </script>
 </body>
 </html>
