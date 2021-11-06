@@ -15,6 +15,7 @@ require("electron-reload")(__dirname, {
     /main-process|[/\\]\./,
     /database|[/\\]\./,
     /main.js/,
+    /flir_cam.pgm/,
   ],
 });  
 
@@ -38,7 +39,7 @@ function initialize () {
       icon: path.join(__dirname, 'assets/app-icon/win/app_icon.ico'),
       width: 1300,
       minWidth: 1000,
-      height: 840,
+      height: 900,
       title: app.getName(),
       webPreferences: {
         nodeIntegration: true

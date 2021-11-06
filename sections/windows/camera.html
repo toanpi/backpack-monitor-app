@@ -6,26 +6,113 @@
           <svg class="section-icon">
             <use xlink:href="assets/img/icons.svg#icon-menu"></use>
           </svg>
-          <strong>Camera</strong>
+          <strong>Flir Camera</strong>
         </h2>
       </div>
     </header>
 
+    <table class="demo-table">
+      <tr>
+        <td>&emsp;</td>
+        <td>Port</td>
+        <td>
+          <input list="ports" name="port" id="port-5" class="demo-input" value="3" placeholder="Port Number">
+          </input>
+        </td>
+        <td>Baurdrate</td>
+        <td>
+          <input list="baurdrates" name="baurdrate" id="baudrate-5" class="demo-input" value="115200"
+            placeholder="Baudrate"></input>
+        </td>
+        <td>
+          <button class="demo-button" id="port-5-btn">Connect</button>
+        </td>
+        <td>&emsp;</td>
+      </tr>
+
+    </table>
 
     <div class="demo">
       <div class="demo-wrapper is-open">
-        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">FLir Camera
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Flir Camera
         </button>
         <div class="demo-box">
           <div class="demo-controls">
+            <table class="demo-table">
+              <tr>
+                <td></td>
+                <td>
+                  <i class="fa fa-play fa-lg section-icon-header" aria-hidden="true" title="Start Video"
+                    id="flir-cam-play"></i> &emsp;
+                  <i class="fa fa-pause fa-lg section-icon-header" aria-hidden="true" title="Pause Video"
+                    id="flir-cam-pause"></i> &emsp;
+
+                  <i class="fa fa-search-plus fa-lg section-icon-header" aria-hidden="true" title="Zoom out"
+                    id="flir-cam-scale-out"></i> &emsp;
+                  <i class="fa fa-search-minus fa-lg section-icon-header" aria-hidden="true" title="Zoom in"
+                    id="flir-cam-scale-in"></i>&emsp;
+                  <i class="fa fa-broom fa-lg section-icon-header" aria-hidden="true" title="Zoom Reset"
+                    id="flir-cam-scale-reset"></i>&emsp;
+                </td>
+                <td></td>
+
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <div id="canvas-container" style="overflow: auto">
+                    <canvas id="flir-cam-capture"> </canvas>
+                  </div>
+                  <div id="flir-cam-scale-value"></div>
+                </td>
+
+                <td>
+                </td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-wrapper is-open">
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Debug Console
+        </button>
+        <div class="demo-box">
+          <div class="demo-controls">
+            <table class="demo-table">
+              <tr>
+                <td colspan="3">
+                  <textarea class="demo-textarea" rows="15" id="port-5-screen"></textarea>
+                </td>
+              </tr>
+
+            </table>
 
           </div>
         </div>
       </div>
     </div>
 
+
+    <datalist id="baurdrates">
+      <option value="115200">
+      <option value="9600">
+    </datalist>
+
+    <datalist id="ports">
+      <option value="0">
+      <option value="1">
+      <option value="2">
+      <option value="3">
+      <option value="4">
+      <option value="5">
+    </datalist>
+
     <script type="text/javascript">
-      require('./renderer-process/windows/serial-handler')
+      require('./renderer-process/windows/rt685-handler')
     </script>
 
   </section>

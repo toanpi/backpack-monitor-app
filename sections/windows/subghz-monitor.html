@@ -20,6 +20,21 @@
       </div>
     </header>
 
+    <table class="demo-table">
+      <tr>
+        <td>&emsp;</td>
+        <td>Port</td>
+        <td><input list="ports" name="port" id="port-0" class="demo-input" value="8" title="Collector COM"
+            placeholder="Collector COM Port" required></td>
+        <td>Baurdrate</td>
+        <td><input list="baurdrates" name="baurdrate" id="baudrate-0" class="demo-input" value="115200"
+            placeholder="Baudrate" title="Baudrate"></td>
+        <td>
+          <button class="demo-button" id="port-0-btn">Connect</button>
+        </td>
+        <td>&emsp;</td>
+      </tr>
+    </table>
 
     <div class="demo">
       <div class="demo-wrapper is-open">
@@ -28,12 +43,12 @@
         <div class="demo-box">
           <div class="demo-controls">
 
-            <table id="system-monitor-table">
+            <table id="system-monitor-table" class="demo-table">
 
               <tr>
                 <td>
                   <table>
-                    <tr>
+                    <!-- <tr>
                       <td>Connect Collector</td>
                       <td>
                         <button class="demo-button" id="port-0-btn" >Connect</button>
@@ -42,7 +57,7 @@
                           placeholder="Collector COM Port" required></td>
                       <td><input list="baurdrates" name="baurdrate" id="baudrate-0" class="demo-input" value="115200"
                           placeholder="Baudrate" title="Baudrate"></td>
-                    </tr>
+                    </tr> -->
 
                     <tr>
                       <td>Toggle Node Led</td>
@@ -61,14 +76,14 @@
                     </tr>
 
                     <tr>
-                      <td >Test Packet Loss</td>
+                      <td>Test Packet Loss</td>
                       <td><button class=" demo-button" id="start-packet-loss-btn">Start</button></td>
                       <td><input id="test-paclet-loss-packet-size" class="demo-input" placeholder="Packet Size"
-                        title="Packet Size" required value="100"></td>
-                        <td><input id="test-paclet-loss-packet-num" class="demo-input" placeholder="Number of Packets"
+                          title="Packet Size" required value="100"></td>
+                      <td><input id="test-paclet-loss-packet-num" class="demo-input" placeholder="Number of Packets"
                           title="Number of Packets" required value="30"></td>
-                          <td><input id="test-paclet-loss-period" class="demo-input" placeholder="Period (ms)"
-                              title="Period (ms)" required value="3000"></td>
+                      <td><input id="test-paclet-loss-period" class="demo-input" placeholder="Period (ms)"
+                          title="Period (ms)" required value="3000"></td>
                     </tr>
 
                   </table>
@@ -87,8 +102,8 @@
 
               <tr>
                 <td><strong>Data From Network</strong> (
-                  <input type="checkbox" id="show-raw-data" checked> Show Raw Data From Sensors )
-                  <textarea class="demo-textarea" rows="15" style="width:100%; border: none; outline: none;" id="port-0-screen"></textarea></td>
+                  <input type="checkbox" id="show-raw-data" checked style="width: 1em; height: 1em;"> Show Raw Data From Sensors )
+                  <textarea class="demo-textarea" rows="20" id="port-0-screen"></textarea></td>
               </tr>
 
             </table>
@@ -127,10 +142,8 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
-                    id="port-1-screen"></textarea></td>
-                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
-                    id="port-2-screen"></textarea></td>
+                <td colspan="3"><textarea class="demo-textarea" rows="10" id="port-1-screen"></textarea></td>
+                <td colspan="3"><textarea class="demo-textarea" rows="10" id="port-2-screen"></textarea></td>
               </tr>
 
 
@@ -155,10 +168,8 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
-                    id="port-3-screen"></textarea></td>
-                <td colspan="3"><textarea class="demo-textarea" rows="10" style="width:100%; border: none; outline: none;"
-                    id="port-4-screen"></textarea></td>
+                <td colspan="3"><textarea class="demo-textarea" rows="10" id="port-3-screen"></textarea></td>
+                <td colspan="3"><textarea class="demo-textarea" rows="10" id="port-4-screen"></textarea></td>
               </tr>
 
 
@@ -195,6 +206,7 @@
 
     <script type="text/javascript">
       require('./renderer-process/windows/serial-handler')
+      require('./renderer-process/windows/cc1352-handler')
     </script>
 
   </section>

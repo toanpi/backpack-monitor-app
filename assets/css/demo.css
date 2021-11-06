@@ -87,9 +87,9 @@
 .demo-box {
   display: none;
   position: relative;
-  padding: 2em;
+  padding: 1em;
   margin-top: 1em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   border-radius: 6px;
   border: 1px solid var(--color-border);
   background-color: var(--color-bg);
@@ -176,6 +176,11 @@
 .demo-textarea {
   background-color: var(--color-body-bg);
   color: var(--color-strong);
+  font-size: 1.1em;
+  font-weight: bold;
+  width:100%; 
+  border: none;
+  outline: none;
 }
 
 .demo-input {
@@ -189,12 +194,21 @@
   color: inherit;
   background-color: transparent;
   width: 90%;
-  /* border-color: var(--color-border); */
+  border-color: var(--color-border);
+  /* border-color: hsl(0,0%,80%); */
 }
+
 .demo-input:focus {
   outline: none;
   border-color: hsl(0,0%,80%);
   background-color: white;
+}
+
+.demo-table { 
+  border : none;
+}
+.demo-table td {
+  border : none;
 }
 
 .demo-response {

@@ -1,7 +1,7 @@
 {
   "name": "backpack-network-app",
   "productName": "Backpack Network Monitor",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Backpack Network Monitor",
   "main": "main.js",
   "bin": "cli.js",
@@ -59,6 +59,7 @@
     "electron-shortcut-normalizer": "^1.0.0",
     "electron-store": "^8.0.1",
     "glob": "^7.1.0",
+    "hex-to-array-buffer": "^2.0.0",
     "highlight.js": "^10.4.1",
     "iconv-lite": "^0.6.3",
     "node-gyp": "^8.1.0",
