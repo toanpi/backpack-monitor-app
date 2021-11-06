@@ -109,9 +109,21 @@ ipcRenderer.on("serial-data", (event, arg) => {
     if (arg.data.hasOwnProperty("colorData")) {
       processCamData(arg.data);
     } else {
-      if(arg.data.hasOwnProperty('log'))
-      serial.showOnScreen(arg.portID, arg.data.log);
+      if (arg.data.hasOwnProperty("log"))
+        serial.showOnScreen(arg.portID, arg.data.log);
     }
+  }
+});
+
+ipcRenderer.on("serial-event", (event, arg) => {
+  switch (true) {
+    case arg.event == "error":
+    case arg.event == "close":
+      //{event: "error", portID: portID}
+      if (arg.portID === "port-" + FLIR_CAM_PORT) {
+        serial.updatePortStatus("disconnected", port5Btn);
+      }
+    break;
   }
 });
 

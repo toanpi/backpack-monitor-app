@@ -60,11 +60,10 @@ function connectReq(portIdx, portBtn, type) {
   portBtn.disabled = false
 
   if (reply && reply.status === "connected") {
-    portBtn.innerHTML = "Disconnect";
+    updatePortStatus('connected', portBtn)
     return true;
-    
   } else if (reply && reply.status === "disconnected") {
-    portBtn.innerHTML = "Connect";
+    updatePortStatus('disconnected', portBtn)
     return false;
   }
 
@@ -91,10 +90,10 @@ function checkPortConnected(portIdx, portBtn){
   });
 
   if (reply && reply.status === "connected") {
-    portBtn.innerHTML = "Disconnect";
+    updatePortStatus('connected', portBtn)
     return true;
   } else if (reply && reply.status === "disconnected") {
-    portBtn.innerHTML = "Connect";
+    updatePortStatus('disconnected', portBtn)
     return false;
   }
 }
@@ -151,14 +150,49 @@ function showOnScreen(portID, data){
   textarea.scrollTop = textarea.scrollHeight;
 }
 
+/*******************************************************************************
+Function:
+  ()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/06/2021
+*******************************************************************************/
+function updatePortStatus(status, portBtn) {
+  switch(true){
+    case status == "connected":
+      portBtn.innerHTML = "Disconnect";
+      break;
+    case status == "disconnected":
+      portBtn.innerHTML = "Connect";
+      break;
+  }
+}
+
 //******************************************************************************
 //   EVENT HANDLER
 //******************************************************************************
 ipcRenderer.on('serial-event', (event, arg) => {
   console.log(arg);
-  
-  if(arg.event === 'list'){
-    document.getElementById('ports').innerHTML = fillOptions(arg.data);
+  switch (true){
+    case arg.event == "list":
+      document.getElementById('ports').innerHTML = fillOptions(arg.data);
+      break;
+    case arg.event == "open":
+      // {event: "open", portID: portID}
+    case arg.event == "close":
+      // {event: "close",portID: portID}
+      console.log(arg.data);
+    break;
+    case arg.event == "error":
+      //{event: "error", portID: portID}
+    break;
   }
 })
 
@@ -171,5 +205,6 @@ module.exports = {
   actionReq,
   showOnScreen,
   fillOptions,
+  updatePortStatus
 };
 

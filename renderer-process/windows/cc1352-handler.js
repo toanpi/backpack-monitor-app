@@ -5,7 +5,6 @@ const COLLECTOR_PORT_IDX = 0; // Collector port ID always 0
 const COLLECTOR_PORTS_LOG_IDX = [1, 2, 3, 4]
 var enableShowRawSensorData = true
 let systemTreeTable = document.getElementById("system-tree-table")
-port0Btn = document.getElementById("port-"+ COLLECTOR_PORT_IDX+ "-btn");
 var currentAllNodes = []
 var blinkButton = document.getElementById("blink-nodes-btn")
 var blinkTimer = null;
@@ -14,6 +13,38 @@ var packetLossBtn = document.getElementById("start-packet-loss-btn");
 //******************************************************************************
 //   CODE
 //******************************************************************************
+var portManager = {
+  0: { button: undefined, portID: 'port-0' },
+  1: { button: undefined, portID: 'port-1' },
+  2: { button: undefined, portID: 'port-2' },
+  3: { button: undefined, portID: 'port-3' },
+  4: { button: undefined, portID: 'port-4' },
+};
+
+
+/*******************************************************************************
+Function:
+  ()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/06/2021
+*******************************************************************************/
+function getPortBtn(portID) {
+  for (var port in portManager) {
+    if (portID == "port-" + port) {
+      return document.getElementById("port-" + port + "-btn")
+    }
+  }
+  return null;
+}
+
 /*******************************************************************************
 Function:
   ()
@@ -53,7 +84,11 @@ function disableAllBtn() {
     elem.disabled = true;
   });
 
-  port0Btn.disabled = false;
+  let port = getPortBtn(COLLECTOR_PORT_IDX);
+
+  if (port) {
+    port.disabled = false;
+  }
 }
 
 /*******************************************************************************
@@ -72,12 +107,12 @@ Author, Date:
 *******************************************************************************/
 function connectReq(portIdx, portBtn, type) {
   if (serial.connectReq(portIdx, portBtn, type)) {
-    if (portIdx === COLLECTOR_PORT_IDX) {
+    if (portIdx == COLLECTOR_PORT_IDX) {
       enableAllBtn();
       actionReq(portIdx, "list-nodes");
     }
   } else {
-    if (portIdx === COLLECTOR_PORT_IDX) {
+    if (portIdx == COLLECTOR_PORT_IDX) {
       disableAllBtn();
     }
   }
@@ -402,28 +437,35 @@ document.getElementById('show-raw-data').addEventListener( 'change', function() 
 //******************************************************************************
 //   PORT HANDLER
 //******************************************************************************
-port0Btn.addEventListener("click", () => {
-  connectReq(0, port0Btn, "raw");
-});
-
-for (let port = 0; port < COLLECTOR_PORTS_LOG_IDX.length; port++) {
-  let portBtn = document.getElementById(
-    "port-" + COLLECTOR_PORTS_LOG_IDX[port] + "-btn"
-  );
-  portBtn.addEventListener("click", () => {
-    serial.connectReq(COLLECTOR_PORTS_LOG_IDX[port], portBtn, "string");
-  });
-}
 
 //******************************************************************************
 //   Start-up
 //******************************************************************************
-if (serial.checkPortConnected(COLLECTOR_PORT_IDX, port0Btn)) {
-  enableAllBtn();
-  serial.actionReq(COLLECTOR_PORT_IDX, "list-nodes");
-} else {
-  port0Btn.innerHTML = "Connect";
-  disableAllBtn();
+function addEventListener(portIdx, type){
+  let btn = document.getElementById("port-" + portIdx + "-btn");
+
+  btn.addEventListener("click", () => {
+    connectReq(portIdx, btn, type);
+  });
+}
+
+for (var port in portManager) {
+  if(port == COLLECTOR_PORT_IDX){
+    let colBtn = document.getElementById("port-" + port + "-btn");
+
+    if (serial.checkPortConnected(port, colBtn)) {
+      enableAllBtn();
+      serial.updatePortStatus("connected", colBtn);
+      actionReq(port, "list-nodes");
+    } else {
+      serial.updatePortStatus("disconnected", colBtn);
+      disableAllBtn();
+    }
+
+    addEventListener(port, "raw")
+  } else {
+    addEventListener(port, "string")
+  }
 }
 
 //******************************************************************************
@@ -439,6 +481,20 @@ ipcRenderer.on("serial-data", (event, arg) => {
     case portIDList.includes(arg.portID):
       serial.showOnScreen(arg.portID, arg.data);
       break;
+  }
+});
+
+ipcRenderer.on("serial-event", (event, arg) => {
+  console.log(arg);
+  switch (true) {
+    case arg.event == "error":
+    case arg.event == "close":
+      //{event: "error", portID: portID}
+      let button = getPortBtn(arg.portID);
+      if (button) {
+        serial.updatePortStatus("disconnected", button);
+      }
+    break;
   }
 });
 
