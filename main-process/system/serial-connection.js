@@ -179,22 +179,30 @@ Author, Date:
   Toan Huynh, 11/06/2021
 *******************************************************************************/
 ipcMain.on("serial-event", (event, arg) => {
-  let portHandler =getPortHandler(arg.portID);
-
+  
   switch (true) {
     case arg.event == "connect":
       event.returnValue = portConnect(arg.port, arg.portID, arg.baudRate, arg.type);
       break;
-
-    case arg.event == "disconnect":
-      event.returnValue = portClose(portHandler, arg.port, arg.portID);
+      
+      case arg.event == "disconnect":
+      {
+        let portHandler = getPortHandler(arg.portID);
+        event.returnValue = portClose(portHandler, arg.port, arg.portID);
+      }
       break;
-
-    case arg.event == "check-port":
-      event.returnValue = {
-        status: portHandler ? "connected": "disconnected",
-        port: arg.portID,
-      };
+      
+      case arg.event == "check-port":
+      {
+        let portHandler = getPortHandler(arg.portID);
+        event.returnValue = {
+          status: portHandler ? "connected" : "disconnected",
+          port: arg.portID,
+        };
+      }
+      break;
+    case arg.event == "list-ports":
+      listSysPorts(true);
       break;
   }
 });
@@ -224,7 +232,7 @@ function checkPortExists(portNum, sn) {
   return false;
 }
 
-function listSysPorts() {
+function listSysPorts(forceUpdate) {
   SerialPort.list().then(function(ports){
   let _portsList = []
   let needUpdate = false;
@@ -235,7 +243,7 @@ function listSysPorts() {
     _portsList.push({value: portNum, name: `${port.manufacturer} (SN: ${port.serialNumber})`});
   })
 
-  if(needUpdate || _portsList.length != portList.length) {
+  if(needUpdate || _portsList.length != portList.length || forceUpdate) {
     portList = Array.from(_portsList);
     console.log('Update ports list', portList)
     render.sendRenderRequest("serial-event", {event: "list", data: _portsList});
@@ -273,7 +281,7 @@ function write(portID, data) {
 //   Update the serial port list
 //******************************************************************************
 setInterval(function () {
-  listSysPorts();
+  listSysPorts(false);
 }, 1000);
 
 
