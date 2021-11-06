@@ -63,9 +63,10 @@ Author, Date:
 *******************************************************************************/
 function portClose(portHandler, portNum, portId) {
   if (portHandler) {
+    portClear(portId);
     portHandler.close(function (err) {
       console.log("Port closed " + portNum);
-      portClear(portId)
+      // portClear(portId)
     });
     return { status: "disconnected", port: portId };;
   } else {
@@ -121,7 +122,7 @@ function portConnect(portNum, portID, baudRate, type) {
 
       if (getPortHandler(portID) != undefined) {
         portClear(portID);
-        dialog.showErrorBox(`Error on port ${portNum} !`, "");
+        dialog.showErrorBox(`Error on port ${portNum}!`, "");
         render.sendRenderRequest("serial-event", {event: "error", portID: portID,});
       }
 
@@ -131,9 +132,12 @@ function portConnect(portNum, portID, baudRate, type) {
     //   Close Event Handler
     //******************************************************************************
     portHandler.on("close", function (err) {
-      console.log(`Disconnect on port ${portNum} !`);
-      portClear(portID);
-      render.sendRenderRequest("serial-event", {event: "close",portID: portID,});
+      console.log(`Disconnect on port ${portNum}!`);
+      if (getPortHandler(portID) != undefined) {
+        portClear(portID);
+        dialog.showErrorBox(`Close on port ${portNum}!`, "");
+        render.sendRenderRequest("serial-event", {event: "close",portID: portID,});
+      }      
     });
 
     //******************************************************************************
@@ -209,18 +213,36 @@ Notes:
 Author, Date:
   Toan Huynh, 11/06/2021
 *******************************************************************************/
-SerialPort.list().then(function(ports){
-  var portList = []
+var portList = []
+
+function checkPortExists(portNum, sn) {
+  for (var i = 0; i < portList.length; i++) {
+    if (portList[i].value == portNum && portList[i].name.includes(sn)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function listSysPorts() {
+  SerialPort.list().then(function(ports){
+  let _portsList = []
+  let needUpdate = false;
 
   ports.forEach(function(port){
-    console.log("Port: ", port);
-    portList.push(port.path.replace( /^\D+/g, ''))
+    let portNum = port.path.replace(/^\D+/g, "");
+    needUpdate = !checkPortExists(portNum, port.serialNumber);
+    _portsList.push({value: portNum, name: `${port.manufacturer} (SN: ${port.serialNumber})`});
   })
 
-  console.log(portList)
-
-  render.sendRenderRequest("serial-event", {event: 'list', data: portList});
+  if(needUpdate || _portsList.length != portList.length) {
+    portList = Array.from(_portsList);
+    console.log('Update ports list', portList)
+    render.sendRenderRequest("serial-event", {event: "list", data: _portsList});
+  }
 });
+}
+
 
 /*******************************************************************************
 Function:
@@ -246,6 +268,14 @@ function write(portID, data) {
     return { status: "error", log: "No devive found!" };
   }
 }
+
+//******************************************************************************
+//   Update the serial port list
+//******************************************************************************
+setInterval(function () {
+  listSysPorts();
+}, 1000);
+
 
 //******************************************************************************
 //   EXPORT

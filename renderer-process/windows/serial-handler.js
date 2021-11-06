@@ -10,7 +10,16 @@ function fillOptions(dataArray) {
   var options = '';
 
   for (var i = 0; i < dataArray.length; i++) {
-    options += '<option value="' + dataArray[i] + '" />';
+    options += `<option value="${dataArray[i]}"></option>`
+  }
+  return options
+}
+
+function fillOptionsWithName(dataArray) {
+  var options = '';
+
+  for (var i = 0; i < dataArray.length; i++) {
+    options += `<option value="${dataArray[i].value}">${dataArray[i].name}</option>`
   }
   return options
 }
@@ -182,7 +191,7 @@ ipcRenderer.on('serial-event', (event, arg) => {
   console.log(arg);
   switch (true){
     case arg.event == "list":
-      document.getElementById('ports').innerHTML = fillOptions(arg.data);
+      document.getElementById('ports').innerHTML = fillOptionsWithName(arg.data);
       break;
     case arg.event == "open":
       // {event: "open", portID: portID}
@@ -205,6 +214,7 @@ module.exports = {
   actionReq,
   showOnScreen,
   fillOptions,
-  updatePortStatus
+  updatePortStatus,
+  fillOptionsWithName
 };
 

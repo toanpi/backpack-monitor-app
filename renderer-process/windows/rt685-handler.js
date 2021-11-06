@@ -160,10 +160,10 @@ zoomResetBtn.addEventListener("click", () => {
   updateZoomLevel(imageScale);
 });
 
-camPlayBtn.addEventListener("click", () => {
+// camPlayBtn.addEventListener("click", () => {
     
-})
+// })
 
-camPauseBtn.addEventListener("click", () => {
+// camPauseBtn.addEventListener("click", () => {
 
-})
+// })
