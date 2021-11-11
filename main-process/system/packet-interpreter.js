@@ -102,6 +102,7 @@ function processRawData(data) {
   let ret = {}
 
   if (!packageVerify(data)) {
+    // console.log(data)
     // console.error("Invalid package!");
     return { log: data.length < 5000 ? data : "" };
   }
@@ -124,7 +125,7 @@ function processRawData(data) {
       ret = collector.processTestPAcketLoss(dataBuffer, data.slice(HEADER_SIZE))
     break;
     case LEPTON_CAM_PGM_IMAGE_OPCODE:
-      ret = flirCamHandler.processCamPgmImage(data.slice(HEADER_SIZE), header.dataSize)
+      ret = flirCamHandler.processCamRawImage(data.slice(HEADER_SIZE), header.dataSize)
     break;
     default:
       ret = {log: data.length < 5000 ? data : ""}

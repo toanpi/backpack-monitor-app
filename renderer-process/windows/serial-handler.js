@@ -77,6 +77,29 @@ function connectReq(portIdx, portBtn, type) {
   }
 
 }
+
+/*******************************************************************************
+Function:
+  ()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/08/2021
+*******************************************************************************/
+function getPortInput(portIdx) {
+  return document.getElementById("port-" + portIdx)
+}
+
+function getBaudrateInput(portIdx) {
+  return document.getElementById("baudrate-" + portIdx)
+}
+
 /*******************************************************************************
 Function:
   ()
@@ -123,9 +146,6 @@ Author, Date:
   Toan Huynh, 11/05/2021
 *******************************************************************************/
 function actionReq(portIdx, req) {
-  if (portIdx != COLLECTOR_PORT_IDX) {
-    return;
-  }
 
   if(req){
     const reply = ipcRenderer.sendSync("serial-req", req);
@@ -222,6 +242,8 @@ module.exports = {
   showOnScreen,
   fillOptions,
   updatePortStatus,
-  fillOptionsWithName
+  fillOptionsWithName, 
+  getBaudrateInput,
+  getPortInput
 };
 

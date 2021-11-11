@@ -1,3 +1,5 @@
+const Store = require('electron-store');
+const settings = new Store();
 const {ipcRenderer} = require('electron')
 var serial = require("./serial-handler");
 
@@ -446,10 +448,14 @@ function addEventListener(portIdx, type){
 
   btn.addEventListener("click", () => {
     connectReq(portIdx, btn, type);
+    // Store value
+    settings.set('port-'+ portIdx, serial.getPortInput(portIdx).value)
+    settings.set('baudrate-'+ portIdx, serial.getBaudrateInput(portIdx).value)
   });
 }
 
 for (var port in portManager) {
+
   if(port == COLLECTOR_PORT_IDX){
     let colBtn = document.getElementById("port-" + port + "-btn");
 
@@ -466,6 +472,10 @@ for (var port in portManager) {
   } else {
     addEventListener(port, "string")
   }
+
+  // Restore previous values
+  serial.getPortInput(port).value = settings.get('port-'+ port, 0)
+  serial.getBaudrateInput(port).value = settings.get('baudrate-'+ port, 115200)
 }
 
 //******************************************************************************

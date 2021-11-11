@@ -19,9 +19,9 @@
           <input list="ports" name="port" id="port-5" class="demo-input" value="3" placeholder="Port Number">
           </input>
         </td>
-        <td>Baurdrate</td>
+        <td>Baudrate</td>
         <td>
-          <input list="baurdrates" name="baurdrate" id="baudrate-5" class="demo-input" value="115200"
+          <input list="baurdrates" name="baudrate" id="baudrate-5" class="demo-input" value="115200"
             placeholder="Baudrate"></input>
         </td>
         <td>
@@ -42,10 +42,12 @@
               <tr>
                 <td></td>
                 <td>
-                  <!-- <i class="fa fa-play fa-lg section-icon-header" aria-hidden="true" title="Start Video"
+                  <i class="fa fa-play fa-lg section-icon-header" aria-hidden="true" title="Start Video"
                     id="flir-cam-play"></i> &emsp;
                   <i class="fa fa-pause fa-lg section-icon-header" aria-hidden="true" title="Pause Video"
-                    id="flir-cam-pause"></i> &emsp; -->
+                    id="flir-cam-pause"></i> &emsp;&emsp;
+                  <i class="fa fa-camera fa-lg section-icon-header" aria-hidden="true" title="Capture"
+                    id="flir-cam-capture"></i> &emsp;&emsp;
 
                   <i class="fa fa-search-plus fa-lg section-icon-header" aria-hidden="true" title="Zoom out"
                     id="flir-cam-scale-out"></i> &emsp;
@@ -61,7 +63,7 @@
                 <td></td>
                 <td>
                   <div id="canvas-container" style="overflow: auto">
-                    <canvas id="flir-cam-capture"> </canvas>
+                    <canvas id="flir-cam-image"> </canvas>
                   </div>
                   <div id="flir-cam-scale-value"></div>
                 </td>
@@ -85,12 +87,49 @@
             <table class="demo-table">
               <tr>
                 <td colspan="3">
-                  <textarea class="demo-textarea" rows="15" id="port-5-screen" disabled></textarea>
+                  <textarea class="demo-textarea" rows="10" id="port-5-screen" disabled></textarea>
                 </td>
               </tr>
-
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="demo">
+      <div class="demo-wrapper is-open">
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Setting
+        </button>
+        <div class="demo-box">
+          <div class="demo-controls">
+            <table class="demo-table">
+              <tr>
+                <td>Log Name (No extension)</td>
+                <td>
+                  <input name="port" id="flir-cam-setting-log-name" type="text"class="demo-input" value="" placeholder="Log Name" title="Log Name"></input>
+                </td>
+              </tr>
+              <tr>
+                <td>Log Directory</td>
+                <td>
+                  <input name="port" id="flir-cam-setting-log-dir" class="demo-input" value="C:\" placeholder="Log Directory"
+                    title="Log Directory"></input>
+                </td>
+              </tr>
+              <tr>
+                <td>Capture Interval (s)</td>
+                <td>
+                  <input name="port" id="flir-cam-setting-capture-interval" class="demo-input" value="1" placeholder="Capture Interval"
+                    title="Capture Interval"></input>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                  <button class="demo-button" style="width: 20%;" id="flir-cam-setting-save">Save</button>
+                </td>
+                <td></td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

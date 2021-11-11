@@ -1,7 +1,10 @@
+var path = require('path');
+const {ipcMain, dialog} = require('electron')
 fs = require('fs');
+const createCsvWriter = require('csv-writer').createArrayCsvWriter;
 
-const SIGNATURE_DATA = 'FLIR';
-const SIGNATURE_SIZE = 4;
+
+var LOGPATH = ""
 
 var IronBlackColorMap = [
   255, 255, 255, 253, 253, 253, 251, 251, 251, 249, 249, 249, 247, 247, 247,
@@ -202,11 +205,65 @@ function processCamPgmImagePgm(dataString) {
   }
 }
 
+function setLogPath(logName, logDir) {
+  if (!logName) {
+    dialog.showErrorBox(`Log name is invalid ${logName}!`, "");
+    return;
+  }
+
+  if (!logDir) {
+    dialog.showErrorBox(`Log directory is invalid ${logDir}!`, "");
+    return;
+  }
+
+  LOGPATH = path.join(logDir, logName);
+
+  fs.access(logDir, function (error) {
+    if (error) {
+      dialog.showErrorBox(logDir + ": directory does not exist!", "");
+      LOGPATH = "";
+    } else {
+      console.log("New log path: " + LOGPATH);
+    }
+  });
+}
+
+function writeLog(width, height, raw, logPath) {
+  if (!logPath) {
+    return;
+  }
+
+  let log = [];
+  let now = new Date();
+
+  log.push(now.toDateString());
+  log.push(width);
+  log.push(height);
+  log = log.concat(raw);
+
+  const csvWriter = createCsvWriter({
+    header: ["timestamp"],
+    // path: 'C:\\Users\\Dell\\Downloads\\test3.csv',
+    path: logPath + ".csv",
+    append: true,
+  });
+
+  csvWriter
+    .writeRecords([log]) // returns a promise
+    .then(() => {
+      // console.log("...Done");
+    })
+    .catch((error) => {
+      dialog.showErrorBox(error + "", "");
+    });
+}
+
 function processCamPgmImage(dataString, dataSize) {
   if (!dataString) return;
   
   let colorMap = IronBlackColorMap;
   let colorData = [];
+  let logData = []
   let pixelData = Buffer.alloc(
     dataSize - 2,
     dataString.slice(4),
@@ -224,8 +281,12 @@ function processCamPgmImage(dataString, dataSize) {
         g: colorMap[3 * pixel + 1],
         b: colorMap[3 * pixel + 2],
       });
+
+      logData.push(pixel);
     }
   }
+
+  writeLog(width, height, logData, LOGPATH);
 
   return {
     format: "",
@@ -235,6 +296,79 @@ function processCamPgmImage(dataString, dataSize) {
   };
 }
 
+function processCamRawImage(dataString, dataSize) {
+  if (!dataString) return;
+  
+  let colorMap = IronBlackColorMap;
+  let colorData = [];
+  let pixelData = []
+
+  let raw = Buffer.alloc(dataSize - 2, dataString.slice(4), "hex");
+
+  let width = parseInt(dataString.slice(0, 2), 16);
+  let height = parseInt(dataString.slice(2, 4), 16);
+  let minval = Number.MAX_SAFE_INTEGER;
+  let maxVal = 0;
+
+  //******************************************************************************
+  //   Process raw image
+  //******************************************************************************
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width * 2; j += 2) {
+      let pixel = raw.readUInt16BE(i * width * 2 + j);
+      pixelData.push(pixel);
+      if (pixel > maxVal) {
+        maxVal = pixel;
+      }
+      if (pixel < minval) {
+        minval = pixel;
+      }
+    }
+  }
+
+  let diff = maxVal - minval;
+
+  //******************************************************************************
+  //   Covert to pixel data format
+  //******************************************************************************
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      let pixel = Math.floor(((pixelData[i * width + j] - minval) * 255) / diff)
+      colorData.push({
+        r: colorMap[3 * pixel],
+        g: colorMap[3 * pixel + 1],
+        b: colorMap[3 * pixel + 2],
+      });
+    }
+  }
+
+  // console.log(`Received paket: ${pixelData[0]} ${pixelData[pixelData.length - 1]} diff: ${diff} max: ${maxVal} min: ${minval}`);
+
+  writeLog(width, height, pixelData, LOGPATH);
+
+  return {
+    format: "",
+    width: width,
+    height: height,
+    colorData: colorData,
+  };
+}
+
+//******************************************************************************
+//   EVENT HANDLING
+//******************************************************************************
+ipcMain.on("rt685-event", (event, arg) => {
+  switch (true) {
+    case arg.event == "update-log-path":
+    setLogPath(arg.logName, arg.logDir)
+    break;
+  }
+});
+
+//******************************************************************************
+//   EXPORT
+//******************************************************************************
 module.exports = {
-  processCamPgmImage
+  processCamPgmImage,
+  processCamRawImage
 }

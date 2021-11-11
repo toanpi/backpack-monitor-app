@@ -209,6 +209,7 @@
   border : none;
 }
 .demo-table td {
+  /* text-align: left; */
   border : none;
 }
 

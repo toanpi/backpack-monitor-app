@@ -1,10 +1,13 @@
+const Store = require('electron-store');
+const settings = new Store();
+
 var serial = require('./serial-handler')
 const {ipcRenderer} = require('electron')
 const FLIR_CAM_PORT = 5;
 
 
 var port5Btn = document.getElementById(`port-${FLIR_CAM_PORT}-btn`)
-let canvas = document.getElementById('flir-cam-capture');
+let canvas = document.getElementById('flir-cam-image');
 const canvasContainer = document.getElementById('canvas-container');
 var zoomValArea = document.getElementById('flir-cam-scale-value')
 var zoomOutBtn = document.getElementById('flir-cam-scale-out')
@@ -12,6 +15,8 @@ var zoomInBtn = document.getElementById('flir-cam-scale-in')
 var zoomResetBtn = document.getElementById('flir-cam-scale-reset')
 var camPlayBtn = document.getElementById('flir-cam-play')
 var camPauseBtn = document.getElementById('flir-cam-pause')
+var camCaptureBtn = document.getElementById('flir-cam-capture')
+var camSettingSaveBtn = document.getElementById('flir-cam-setting-save')
 
 const lastPos = { x: 0, y: 0 };
 let isDragging = false;
@@ -127,20 +132,103 @@ ipcRenderer.on("serial-event", (event, arg) => {
   }
 });
 
-//******************************************************************************
-//   Check port status
-//******************************************************************************
-if(port5Btn){
-  port5Btn.addEventListener("click", () => {
-    serial.connectReq(FLIR_CAM_PORT, port5Btn, 'raw');
+/*******************************************************************************
+Function:
+  ()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/10/2021
+*******************************************************************************/
+function cmdReq(event, portIdx) {
+
+  let req = {
+    event: event,
+    portID: "port-" + portIdx,
+    video_interval: getDataById("flir-cam-setting-capture-interval"),
+  };
+
+  switch (true) {
+    case event == "start-video":
+      break;
+    case event == "stop-video":
+      break;
+    case event == "start-capture":
+      break;
+    case event == "update-video-interval":
+      break;
+    default:
+      req = null;
+      break;
+  }
+
+  console.log(req);
+
+  if (req) {
+    return serial.actionReq(portIdx, req);
+  }
+}
+/*******************************************************************************
+Function:
+  ()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/10/2021
+*******************************************************************************/
+function updateLogPath()
+{
+  let logDir = getDataById('flir-cam-setting-log-dir', "")
+  let logName = getDataById('flir-cam-setting-log-name', "")
+
+  ipcRenderer.send("rt685-event", {
+    event: "update-log-path",
+    logDir: logDir,
+    logName: logName
   });
+
+}
+/*******************************************************************************
+Function:
+  initData()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/08/2021
+*******************************************************************************/
+function initData(id, defaultValue) {
+  document.getElementById(id).value = settings.get(id, defaultValue)
 }
 
-serial.checkPortConnected(FLIR_CAM_PORT, port5Btn);
-updateZoomLevel(imageScale);
+function storeData(id) {
+  settings.set(id, document.getElementById(id).value);
+}
 
+function getDataById(id) {
+  return document.getElementById(id).value
+}
 
-
+//******************************************************************************
+//   Button Handler
+//******************************************************************************
 zoomOutBtn.addEventListener("click", () => {
   if (imageScale < 100) {
     imageScale++;
@@ -160,10 +248,49 @@ zoomResetBtn.addEventListener("click", () => {
   updateZoomLevel(imageScale);
 });
 
-// camPlayBtn.addEventListener("click", () => {
-    
-// })
+camPlayBtn.addEventListener("click", () => {
+  cmdReq("start-video", FLIR_CAM_PORT);
+})
 
-// camPauseBtn.addEventListener("click", () => {
+camPauseBtn.addEventListener("click", () => {
+  cmdReq("stop-video", FLIR_CAM_PORT);
+})
 
-// })
+
+camCaptureBtn.addEventListener("click", () => {
+  cmdReq("start-capture", FLIR_CAM_PORT);
+})
+
+camSettingSaveBtn.addEventListener("click", () => {
+  storeData('flir-cam-setting-log-dir')
+  // storeData('flir-cam-setting-log-name')
+  storeData('flir-cam-setting-capture-interval')
+  updateLogPath();
+  cmdReq("update-video-interval", FLIR_CAM_PORT);
+})
+
+
+
+//******************************************************************************
+//   INIT
+//******************************************************************************
+serial.getPortInput(FLIR_CAM_PORT).value = settings.get('port-'+ FLIR_CAM_PORT, 3)
+serial.getBaudrateInput(FLIR_CAM_PORT).value = settings.get('baudrate'+ FLIR_CAM_PORT, 115200)
+
+const now = new Date();
+initData('flir-cam-setting-log-name', `flir_cam_log_${now.getMonth()}_${now.getDate()}_${now.getFullYear()}`)
+initData('flir-cam-setting-log-dir', "c:\\")
+initData('flir-cam-setting-capture-interval', 1)
+
+serial.checkPortConnected(FLIR_CAM_PORT, port5Btn);
+updateZoomLevel(imageScale);
+
+updateLogPath();
+
+if(port5Btn){
+  port5Btn.addEventListener("click", () => {
+    serial.connectReq(FLIR_CAM_PORT, port5Btn, 'raw');
+    settings.set('flir-cam-port', serial.getPortInput(FLIR_CAM_PORT).value)
+    settings.set('flir-cam-baudrate', serial.getBaudrateInput(FLIR_CAM_PORT).value)
+  });
+}
