@@ -347,10 +347,37 @@ function processCamRawImage(dataString, dataSize) {
   writeLog(width, height, pixelData, LOGPATH);
 
   return {
+    type: 'raw',
     format: "",
     width: width,
     height: height,
     colorData: colorData,
+  };
+}
+
+/*******************************************************************************
+Function:
+  parseCamInfo()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 11/18/2021
+*******************************************************************************/
+function parseCamInfo(dataString, dataSize)
+{
+  console.log(dataString);
+  return {
+    type: 'info',
+    power_state: "",
+    operation_mode: "",
+    operation_state: "",
+    video_interval: 0,
   };
 }
 
@@ -370,5 +397,6 @@ ipcMain.on("rt685-event", (event, arg) => {
 //******************************************************************************
 module.exports = {
   processCamPgmImage,
-  processCamRawImage
+  processCamRawImage,
+  parseCamInfo,
 }

@@ -135,7 +135,7 @@ function portConnect(portNum, portID, baudRate, type) {
       console.log(`Disconnect on port ${portNum}!`);
       if (getPortHandler(portID) != undefined) {
         portClear(portID);
-        dialog.showErrorBox(`Close on port ${portNum}!`, "");
+        // dialog.showErrorBox(`Close on port ${portNum}!`, "");
         render.sendRenderRequest("serial-event", {event: "close",portID: portID,});
       }      
     });

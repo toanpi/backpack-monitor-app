@@ -18,6 +18,17 @@ var camPauseBtn = document.getElementById('flir-cam-pause')
 var camCaptureBtn = document.getElementById('flir-cam-capture')
 var camSettingSaveBtn = document.getElementById('flir-cam-setting-save')
 
+var camBootupBtn = document.getElementById('flir-cam-bootup');
+var camShutdownBtn = document.getElementById('flir-cam-shut-down');
+var camPowerOffBtn = document.getElementById('flir-cam-power-off');
+var camPowerOnBtn = document.getElementById('flir-cam-power-on');
+
+var camAlwaysONBtn = document.getElementById('flir-cam-always-on');
+var BtnLowPowerBtn = document.getElementById('flir-cam-power-optimize');
+var BtnRunFccBtn = document.getElementById('flir-cam-run-ffc');
+var BtnGetInfoBtn = document.getElementById('flir-cam-get-info');
+
+
 const lastPos = { x: 0, y: 0 };
 let isDragging = false;
 const root = document.documentElement;
@@ -164,7 +175,7 @@ function cmdReq(event, portIdx) {
     case event == "update-video-interval":
       break;
     default:
-      req = null;
+      // req = null;
       break;
   }
 
@@ -249,16 +260,16 @@ zoomResetBtn.addEventListener("click", () => {
 });
 
 camPlayBtn.addEventListener("click", () => {
-  cmdReq("start-video", FLIR_CAM_PORT);
+  cmdReq("flir-cam-start-video", FLIR_CAM_PORT);
 })
 
 camPauseBtn.addEventListener("click", () => {
-  cmdReq("stop-video", FLIR_CAM_PORT);
+  cmdReq("flir-cam-stop-video", FLIR_CAM_PORT);
 })
 
 
 camCaptureBtn.addEventListener("click", () => {
-  cmdReq("start-capture", FLIR_CAM_PORT);
+  cmdReq("flir-cam-start-capture", FLIR_CAM_PORT);
 })
 
 camSettingSaveBtn.addEventListener("click", () => {
@@ -266,10 +277,38 @@ camSettingSaveBtn.addEventListener("click", () => {
   // storeData('flir-cam-setting-log-name')
   storeData('flir-cam-setting-capture-interval')
   updateLogPath();
-  cmdReq("update-video-interval", FLIR_CAM_PORT);
+  cmdReq("flir-cam-update-video-interval", FLIR_CAM_PORT);
 })
 
 
+camBootupBtn.addEventListener("click", () =>{
+  cmdReq("flir-cam-bootup", FLIR_CAM_PORT);
+});
+camShutdownBtn.addEventListener("click", () =>{
+  cmdReq("flir-cam-shut-down", FLIR_CAM_PORT);
+});
+camPowerOffBtn.addEventListener("click", () =>{
+  cmdReq("flir-cam-power-off", FLIR_CAM_PORT);
+});
+camPowerOnBtn.addEventListener("click", () =>{
+  cmdReq("flir-cam-power-on", FLIR_CAM_PORT);
+});
+
+camAlwaysONBtn.addEventListener('click', () => {
+  cmdReq("flir-cam-always-on", FLIR_CAM_PORT);
+})
+
+BtnLowPowerBtn.addEventListener('click', () => {
+  cmdReq("flir-cam-power-optimize", FLIR_CAM_PORT);
+})
+
+BtnRunFccBtn.addEventListener('click', () => {
+  cmdReq("flir-cam-run-ffc", FLIR_CAM_PORT);
+})
+
+BtnGetInfoBtn.addEventListener('click', () => {
+  cmdReq("flir-cam-get-info", FLIR_CAM_PORT);
+})
 
 //******************************************************************************
 //   INIT

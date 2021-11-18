@@ -10,7 +10,9 @@ const START_PACKET = 'S'
 const LIST_NODE_CODE = 'L'
 const SENSOR_DATA_CODE = 'D'
 const TEST_PACKET_LOSS_DATA_OPCODE = 'P'
-const LEPTON_CAM_PGM_IMAGE_OPCODE = 'C'
+
+const FLIR_CAM_RAW_OPCODE           = '1'
+const FLIR_CAM_INFO_OPCODE          = '2'
 
 const HEADER_SIZE = 10
 const FOOTER_SIZE = 2
@@ -124,8 +126,11 @@ function processRawData(data) {
     case TEST_PACKET_LOSS_DATA_OPCODE:
       ret = collector.processTestPAcketLoss(dataBuffer, data.slice(HEADER_SIZE))
     break;
-    case LEPTON_CAM_PGM_IMAGE_OPCODE:
+    case FLIR_CAM_RAW_OPCODE:
       ret = flirCamHandler.processCamRawImage(data.slice(HEADER_SIZE), header.dataSize)
+    break;
+    case FLIR_CAM_INFO_OPCODE:
+      ret = flirCamHandler.parseCamInfo(data.slice(HEADER_SIZE), header.dataSize)
     break;
     default:
       ret = {log: data.length < 5000 ? data : ""}
