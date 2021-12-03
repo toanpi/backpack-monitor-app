@@ -25,7 +25,7 @@ function fillOptionsWithName(dataArray) {
 }
 
 // Baud rate
-var baudRates = [9600, 14400, 19200, 38400, 57600, 115200];
+var baudRates = [9600, 14400, 19200, 38400, 57600, 115200, 576000, 921600];
 document.getElementById('baurdrates').innerHTML = fillOptions(baudRates);
 
 //******************************************************************************
@@ -204,6 +204,24 @@ function updatePortStatus(status, portBtn) {
   }
 }
 
+/*******************************************************************************
+Function:
+  getPortId()
+Input Parameters:
+  ---
+Output Parameters:
+  ---
+Description:
+  ---
+Notes:
+  ---
+Author, Date:
+  Toan Huynh, 12/03/2021
+*******************************************************************************/
+function getPortId(portIdx){
+  return 'port-' + portIdx;
+}
+
 //******************************************************************************
 //   EVENT HANDLER
 //******************************************************************************
@@ -244,6 +262,7 @@ module.exports = {
   updatePortStatus,
   fillOptionsWithName, 
   getBaudrateInput,
-  getPortInput
+  getPortInput,
+  getPortId
 };
 

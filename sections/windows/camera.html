@@ -21,7 +21,7 @@
         </td>
         <td>Baudrate</td>
         <td>
-          <input list="baurdrates" name="baudrate" id="baudrate-5" class="demo-input" value="115200"
+          <input list="baurdrates" name="baudrate" id="baudrate-5" class="demo-input" value="921600"
             placeholder="Baudrate"></input>
         </td>
         <td>
@@ -34,7 +34,8 @@
 
     <div class="demo">
       <div class="demo-wrapper is-open">
-        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Flir Camera
+      <!-- <div class="demo-wrapper"> -->
+        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">IR Camera
         </button>
         <div class="demo-box">
           <div class="demo-controls">
@@ -75,7 +76,7 @@
                   <button class="demo-button" id="flir-cam-get-info" title="Get Camera State">Camera State</button>
                 </td>
                 <td>
-                  <div id="canvas-container" style="overflow: auto">
+                  <div id="flir-cam-canvas-container" style="overflow: auto">
                     <canvas id="flir-cam-image"> </canvas>
                   </div>
                   <div id="flir-cam-scale-value"></div>
@@ -93,7 +94,64 @@
 
     <div class="demo">
       <div class="demo-wrapper is-open">
-        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Debug Console
+        <button id="new-window-crashes-demo-toggle-1" class="js-container-target demo-toggle-button">RGB Camera
+        </button>
+        <div class="demo-box">
+          <div class="demo-controls">
+            <table class="demo-table">
+              <tr>
+                <td></td>
+                <td>
+                  <i class="fa fa-play fa-lg section-icon-header" aria-hidden="true" title="Start Video"
+                    id="rgb-cam-play"></i> &emsp;
+                  <i class="fa fa-pause fa-lg section-icon-header" aria-hidden="true" title="Pause Video"
+                    id="rgb-cam-pause"></i> &emsp;&emsp;
+                  <i class="fa fa-camera fa-lg section-icon-header" aria-hidden="true" title="Capture"
+                    id="rgb-cam-capture"></i> &emsp;&emsp;
+
+                  <i class="fa fa-search-plus fa-lg section-icon-header" aria-hidden="true" title="Zoom out"
+                    id="rgb-cam-scale-out"></i> &emsp;
+                  <i class="fa fa-search-minus fa-lg section-icon-header" aria-hidden="true" title="Zoom in"
+                    id="rgb-cam-scale-in"></i>&emsp;
+                  <i class="fa fa-broom fa-lg section-icon-header" aria-hidden="true" title="Zoom Reset"
+                    id="rgb-cam-scale-reset"></i>&emsp;
+                </td>
+                <td></td>
+
+              </tr>
+              <tr>
+                <td style="width: 15%;">
+                  <button class="demo-button" id="rgb-cam-bootup" title="Bootup Camera" style="display: none;">Bootup</button>
+                  <button class="demo-button" id="rgb-cam-shut-down" title="Shutdown Camera" style="display: none;">Shutdown</button>
+                  
+                  <button class="demo-button" id="rgb-cam-always-on" title="Set Always On Mode" style="display: none;">Always On</button>
+                  <button class="demo-button" id="rgb-cam-power-optimize" title="Set Power Optimze Mode" style="display: none;">Low Power</button>
+
+                  <button class="demo-button" id="rgb-cam-power-on" title="Turn Power On Camera" style="display: none;">Power On</button>
+                  <button class="demo-button" id="rgb-cam-power-off" title="Turn Power Off Camera" style="display: none;">Power Off</button>
+
+                  <button class="demo-button" id="rgb-cam-get-info" title="Get Camera State">Camera State</button>
+                </td>
+                <td>
+                  <div id="rgb-cam-canvas-container" style="overflow: auto">
+                    <canvas id="rgb-cam-image"> </canvas>
+                  </div>
+                  <div id="rgb-cam-scale-value"></div>
+                </td>
+
+                <td>
+                </td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-wrapper is-open">
+        <button id="new-window-crashes-demo-toggle-2" class="js-container-target demo-toggle-button">Debug Console
         </button>
         <div class="demo-box">
           <div class="demo-controls">
@@ -111,7 +169,7 @@
 
     <div class="demo">
       <div class="demo-wrapper is-open">
-        <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">Setting
+        <button id="new-window-crashes-demo-toggle-3" class="js-container-target demo-toggle-button">IR Camera Setting
         </button>
         <div class="demo-box">
           <div class="demo-controls">
@@ -130,9 +188,9 @@
                 </td>
               </tr>
               <tr>
-                <td>Capture Interval (s)</td>
+                <td>Capture Interval (ms)</td>
                 <td>
-                  <input name="port" id="flir-cam-setting-capture-interval" class="demo-input" value="1" placeholder="Capture Interval"
+                  <input name="port" id="flir-cam-setting-capture-interval" class="demo-input" value="1000" placeholder="Capture Interval"
                     title="Capture Interval"></input>
                 </td>
               </tr>
@@ -144,12 +202,54 @@
               </tr>
             </table>
           </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-wrapper is-open">
+        <button id="new-window-crashes-demo-toggle-3" class="js-container-target demo-toggle-button">RGB Camera Setting
+        </button>
+        <div class="demo-box">
+            <div class="demo-controls">
+            <table class="demo-table">
+              <tr>
+                <td>Log Name (No extension)</td>
+                <td>
+                  <input name="port" id="rgb-cam-setting-log-name" type="text"class="demo-input" value="" placeholder="Log Name" title="Log Name"></input>
+                </td>
+              </tr>
+              <tr>
+                <td>Log Directory</td>
+                <td>
+                  <input name="port" id="rgb-cam-setting-log-dir" class="demo-input" value="C:\" placeholder="Log Directory"
+                    title="Log Directory"></input>
+                </td>
+              </tr>
+              <tr>
+                <td>Capture Interval (ms)</td>
+                <td>
+                  <input name="port" id="rgb-cam-setting-capture-interval" class="demo-input" value="1000" placeholder="Capture Interval"
+                    title="Capture Interval"></input>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                  <button class="demo-button" style="width: 20%;" id="rgb-cam-setting-save">Save</button>
+                </td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
     <script type="text/javascript">
-      require('./renderer-process/windows/rt685-handler')
+      require('./renderer-process/windows/rt685-core')
+      require('./renderer-process/windows/rt685-rgb-cam-handler')
+      require('./renderer-process/windows/rt685-flir-cam-handler')
     </script>
 
   </section>

@@ -2,6 +2,7 @@
 module.exports = {processRawData}
 
 var flirCamHandler = require('./flir-cam-process')
+var rgbCamHandler = require('./rgb-cam-process')
 var collector = require('./collector-handler')
 
 const START_PACKET = 'S'
@@ -11,8 +12,9 @@ const LIST_NODE_CODE = 'L'
 const SENSOR_DATA_CODE = 'D'
 const TEST_PACKET_LOSS_DATA_OPCODE = 'P'
 
-const FLIR_CAM_RAW_OPCODE           = '1'
-const FLIR_CAM_INFO_OPCODE          = '2'
+const FLIR_CAM_RAW_OPCODE           = '1';
+const FLIR_CAM_INFO_OPCODE          = '2';
+const RGB_FLIR_CAM_RAW_OPCODE       = '5';
 
 const HEADER_SIZE = 10
 const FOOTER_SIZE = 2
@@ -45,6 +47,12 @@ function packageVerify(data){
 
   if (data[0] != START_PACKET || data.length <= 10) {
     return false;
+  }
+
+  // Hack here, fix later
+  if(data[1] == RGB_FLIR_CAM_RAW_OPCODE)
+  {
+    return true; 
   }
 
   let header = data.slice(2, 10)
@@ -106,7 +114,7 @@ function processRawData(data) {
   if (!packageVerify(data)) {
     // console.log(data)
     // console.error("Invalid package!");
-    return { log: data.length < 5000 ? data : "" };
+    return { log: data.length < 3000 ? data : "" };
   }
 
   let header = headerParser(data)
@@ -132,8 +140,11 @@ function processRawData(data) {
     case FLIR_CAM_INFO_OPCODE:
       ret = flirCamHandler.parseCamInfo(data.slice(HEADER_SIZE), header.dataSize)
     break;
+    case RGB_FLIR_CAM_RAW_OPCODE:
+      ret = rgbCamHandler.processCamRawImage(data.slice(HEADER_SIZE), header.dataSize)
+    break;
     default:
-      ret = {log: data.length < 5000 ? data : ""}
+      ret = {log: data.length < 3000 ? data : ""}
     break;
   }
 

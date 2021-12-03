@@ -2,13 +2,14 @@ const Store = require('electron-store');
 const settings = new Store();
 
 var serial = require('./serial-handler')
+var rt685Core = require('./rt685-core')
+
 const {ipcRenderer} = require('electron')
-const FLIR_CAM_PORT = 5;
+const FLIR_CAM_PORT = rt685Core.RT685_COM_PORT;
 
 
-var port5Btn = document.getElementById(`port-${FLIR_CAM_PORT}-btn`)
 let canvas = document.getElementById('flir-cam-image');
-const canvasContainer = document.getElementById('canvas-container');
+const canvasContainer = document.getElementById('flir-cam-canvas-container');
 var zoomValArea = document.getElementById('flir-cam-scale-value')
 var zoomOutBtn = document.getElementById('flir-cam-scale-out')
 var zoomInBtn = document.getElementById('flir-cam-scale-in')
@@ -123,25 +124,27 @@ function updateZoomLevel(zoomLevel) {
 ipcRenderer.on("serial-data", (event, arg) => {
   if (arg.portID === "port-" + FLIR_CAM_PORT) {
     if (arg.data.hasOwnProperty("colorData")) {
-      processCamData(arg.data);
+      if(arg.data.camera == 'flir'){
+        processCamData(arg.data);
+      }
     } else {
-      if (arg.data.hasOwnProperty("log"))
-        serial.showOnScreen(arg.portID, arg.data.log);
+      // if (arg.data.hasOwnProperty("log"))
+      //   serial.showOnScreen(arg.portID, arg.data.log);
     }
   }
 });
 
-ipcRenderer.on("serial-event", (event, arg) => {
-  switch (true) {
-    case arg.event == "error":
-    case arg.event == "close":
-      //{event: "error", portID: portID}
-      if (arg.portID === "port-" + FLIR_CAM_PORT) {
-        serial.updatePortStatus("disconnected", port5Btn);
-      }
-    break;
-  }
-});
+// ipcRenderer.on("serial-event", (event, arg) => {
+//   switch (true) {
+//     case arg.event == "error":
+//     case arg.event == "close":
+//       //{event: "error", portID: portID}
+//       if (arg.portID === "port-" + FLIR_CAM_PORT) {
+//         serial.updatePortStatus("disconnected", port5Btn);
+//       }
+//     break;
+//   }
+// });
 
 /*******************************************************************************
 Function:
@@ -179,6 +182,8 @@ function cmdReq(event, portIdx) {
       break;
   }
 
+  rt685Core.showLog("[APP] Sent request " + event + " to the board. Please wait..");
+
   console.log(req);
 
   if (req) {
@@ -205,7 +210,7 @@ function updateLogPath()
   let logName = getDataById('flir-cam-setting-log-name', "")
 
   ipcRenderer.send("rt685-event", {
-    event: "update-log-path",
+    event: "update-flir-log-path",
     logDir: logDir,
     logName: logName
   });
@@ -313,23 +318,23 @@ BtnGetInfoBtn.addEventListener('click', () => {
 //******************************************************************************
 //   INIT
 //******************************************************************************
-serial.getPortInput(FLIR_CAM_PORT).value = settings.get('port-'+ FLIR_CAM_PORT, 3)
-serial.getBaudrateInput(FLIR_CAM_PORT).value = settings.get('baudrate'+ FLIR_CAM_PORT, 115200)
+// serial.getPortInput(FLIR_CAM_PORT).value = settings.get('port-'+ FLIR_CAM_PORT, 3)
+// serial.getBaudrateInput(FLIR_CAM_PORT).value = settings.get('baudrate'+ FLIR_CAM_PORT, 115200)
 
 const now = new Date();
 initData('flir-cam-setting-log-name', `flir_cam_log_${now.getMonth()}_${now.getDate()}_${now.getFullYear()}`)
 initData('flir-cam-setting-log-dir', "c:\\")
-initData('flir-cam-setting-capture-interval', 1)
+initData('flir-cam-setting-capture-interval', 1000)
 
-serial.checkPortConnected(FLIR_CAM_PORT, port5Btn);
+// serial.checkPortConnected(FLIR_CAM_PORT, port5Btn);
 updateZoomLevel(imageScale);
 
 updateLogPath();
 
-if(port5Btn){
-  port5Btn.addEventListener("click", () => {
-    serial.connectReq(FLIR_CAM_PORT, port5Btn, 'raw');
-    settings.set('flir-cam-port', serial.getPortInput(FLIR_CAM_PORT).value)
-    settings.set('flir-cam-baudrate', serial.getBaudrateInput(FLIR_CAM_PORT).value)
-  });
-}
+// if(port5Btn){
+//   port5Btn.addEventListener("click", () => {
+//     serial.connectReq(FLIR_CAM_PORT, port5Btn, 'raw');
+//     settings.set('flir-cam-port', serial.getPortInput(FLIR_CAM_PORT).value)
+//     settings.set('flir-cam-baudrate', serial.getBaudrateInput(FLIR_CAM_PORT).value)
+//   });
+// }

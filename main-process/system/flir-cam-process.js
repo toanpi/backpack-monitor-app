@@ -348,6 +348,7 @@ function processCamRawImage(dataString, dataSize) {
 
   return {
     type: 'raw',
+    camera: 'flir',
     format: "",
     width: width,
     height: height,
@@ -386,7 +387,7 @@ function parseCamInfo(dataString, dataSize)
 //******************************************************************************
 ipcMain.on("rt685-event", (event, arg) => {
   switch (true) {
-    case arg.event == "update-log-path":
+    case arg.event == "update-flir-log-path":
     setLogPath(arg.logName, arg.logDir)
     break;
   }
