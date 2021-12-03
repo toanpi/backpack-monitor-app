@@ -1,7 +1,7 @@
 {
   "name": "backpack-network-app",
   "productName": "Backpack Network Monitor",
-  "version": "3.2.0",
+  "version": "4.2.0",
   "description": "Backpack Network Monitor",
   "main": "main.js",
   "bin": "cli.js",
