@@ -11,6 +11,10 @@ function fill2Bytes(number) {
   return ("0000" + number.toString(16)).toUpperCase().slice(-4);
 }
 
+function fill4Bytes(number) {
+  return ("00000000" + number.toString(16)).toUpperCase().slice(-8);
+}
+
 ipcMain.on('serial-req', (event, arg) => {
   let isValid = true;
   let packet = "T" // For testing
@@ -61,5 +65,6 @@ ipcMain.on('serial-req', (event, arg) => {
 //   EXPORT
 //******************************************************************************
 module.exports = {
-  fill2Bytes
+  fill2Bytes,
+  fill4Bytes
 };

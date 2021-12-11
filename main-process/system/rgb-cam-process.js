@@ -30,17 +30,18 @@ function setLogPath(logName, logDir) {
   });
 }
 
-function writeLog(width, height, raw, logPath) {
+function writeLog(width, height, raw, logPath, now, systemTick, coreClock) {
   if (!logPath) {
     return;
   }
 
   let log = [];
-  let now = new Date();
 
-  log.push(now.toDateString());
+  log.push(now.toISOString());
   log.push(width);
   log.push(height);
+  log.push(systemTick);
+  log.push(coreClock);
   log = log.concat(raw);
 
   const csvWriter = createCsvWriter({
@@ -60,6 +61,12 @@ function writeLog(width, height, raw, logPath) {
     });
 }
 
+// Pass 8-bit (each) R,G,B, get back 16-bit packed color
+function color565(r, g, b) {
+  return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+}
+
+
 /*******************************************************************************
 Function:
   processCamRawImage()
@@ -78,22 +85,37 @@ function processCamRawImage(dataString, dataSize) {
   if (!dataString) return;
   
   // let colorMap = IronBlackColorMap;
+  let now = new Date();
   let colorData = [];
   let pixelData = [];
-  let rawLen = (dataString.length - 8) / 2;
+  let rawLen = (dataString.length - 24) / 2;
 
-  let raw = Buffer.alloc(rawLen, dataString.slice(8), "hex");
+  let raw = Buffer.alloc(rawLen, dataString.slice(24), "hex");
+  let minval = Number.MAX_SAFE_INTEGER;
 
   let width = parseInt(dataString.slice(0, 4), 16);
   let height = parseInt(dataString.slice(4, 8), 16);
-  let minval = Number.MAX_SAFE_INTEGER;
+  // System tick
+  let systemTick = parseInt(dataString.slice(8, 16), 16);
+  let coreClock = parseInt(dataString.slice(16, 24), 16);
+
   let maxVal = 0;
 
-  console.log(`Received paket: ${raw[0]} ${raw[raw.length - 1]} width ${width} height ${height} length ${raw.length}`);
+  console.log(`Received paket: ${raw[0]} ${raw[raw.length - 1]} width ${width} height ${height} length ${raw.length} system tick ${systemTick} core clock ${coreClock}`);
 
-  if(raw.length != width * height) {
+  if (raw.length != width * height) {
     console.log("Packet is invalid! " + raw.length);
-    return { log: "[APP] Missing some packets from board (Received " + raw.length +"B)"};
+    return {
+      log:
+        "[APP] Missing some packets from board (Received " +
+        Math.round(raw.length / 1024) +
+        "KB) at " +
+        now.getHours() +
+        ":" +
+        now.getMinutes() +
+        ":" +
+        now.getSeconds(),
+    };
   }
 
   //******************************************************************************
@@ -129,7 +151,7 @@ function processCamRawImage(dataString, dataSize) {
     }
   }
 
-  writeLog(width, height, pixelData, LOGPATH);
+  writeLog(width, height, pixelData, LOGPATH, now, systemTick, coreClock);
 
   return {
     type: 'raw',

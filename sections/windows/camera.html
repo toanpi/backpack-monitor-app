@@ -34,7 +34,7 @@
 
     <div class="demo">
       <div class="demo-wrapper is-open">
-      <!-- <div class="demo-wrapper"> -->
+      <!-- <div class="demo-wrapper "> -->
         <button id="new-window-crashes-demo-toggle" class="js-container-target demo-toggle-button">IR Camera
         </button>
         <div class="demo-box">
@@ -64,9 +64,10 @@
                 <td style="width: 15%;">
                   <button class="demo-button" id="flir-cam-bootup" title="Bootup Camera">Bootup</button>
                   <button class="demo-button" id="flir-cam-shut-down" title="Shutdown Camera">Shutdown</button>
-                  
+
                   <button class="demo-button" id="flir-cam-always-on" title="Set Always On Mode">Always On</button>
-                  <button class="demo-button" id="flir-cam-power-optimize" title="Set Power Optimze Mode">Low Power</button>
+                  <button class="demo-button" id="flir-cam-power-optimize" title="Set Power Optimze Mode">Low
+                    Power</button>
 
                   <button class="demo-button" id="flir-cam-run-ffc" title="Run FFC">Run FFC</button>
 
@@ -101,6 +102,9 @@
             <table class="demo-table">
               <tr>
                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                   <i class="fa fa-play fa-lg section-icon-header" aria-hidden="true" title="Start Video"
                     id="rgb-cam-play"></i> &emsp;
@@ -117,32 +121,241 @@
                     id="rgb-cam-scale-reset"></i>&emsp;
                 </td>
                 <td></td>
-
+                <td></td>
               </tr>
+
+              <!-- Image -->
               <tr>
-                <td style="width: 15%;">
-                  <button class="demo-button" id="rgb-cam-bootup" title="Bootup Camera" style="display: none;">Bootup</button>
-                  <button class="demo-button" id="rgb-cam-shut-down" title="Shutdown Camera" style="display: none;">Shutdown</button>
-                  
-                  <button class="demo-button" id="rgb-cam-always-on" title="Set Always On Mode" style="display: none;">Always On</button>
-                  <button class="demo-button" id="rgb-cam-power-optimize" title="Set Power Optimze Mode" style="display: none;">Low Power</button>
+                <td style="width: 18%;">
+                <td style="width: 12%;">
+                <td style="width: 10%;">
+                <td style="width: 10%;">
+                  <!-- <button class="demo-button" id="rgb-cam-bootup" title="Bootup Camera" style="display: none;">Bootup</button> -->
+                  <!-- <button class="demo-button" id="rgb-cam-shut-down" title="Shutdown Camera" style="display: none;">Shutdown</button> -->
 
-                  <button class="demo-button" id="rgb-cam-power-on" title="Turn Power On Camera" style="display: none;">Power On</button>
-                  <button class="demo-button" id="rgb-cam-power-off" title="Turn Power Off Camera" style="display: none;">Power Off</button>
+                  <!-- <button class="demo-button" id="rgb-cam-always-on" title="Set Always On Mode" style="display: none;">Always On</button> -->
+                  <!-- <button class="demo-button" id="rgb-cam-power-optimize" title="Set Power Optimze Mode" style="display: none;">Low Power</button> -->
 
-                  <button class="demo-button" id="rgb-cam-get-info" title="Get Camera State">Camera State</button>
+                  <!-- <button class="demo-button" id="rgb-cam-power-on" title="Turn Power On Camera" style="display: none;">Power On</button> -->
+                  <!-- <button class="demo-button" id="rgb-cam-power-off" title="Turn Power Off Camera" style="display: none;">Power Off</button> -->
+
+                  <!-- <button class="demo-button-small" id="rgb-cam-get-info" title="Show Camera State">Info</button> -->
                 </td>
-                <td>
+                <td rowspan="15">
                   <div id="rgb-cam-canvas-container" style="overflow: auto">
                     <canvas id="rgb-cam-image"> </canvas>
                   </div>
                   <div id="rgb-cam-scale-value"></div>
                 </td>
-
-                <td>
-                </td>
-
+                <td></td>
               </tr>
+
+              <!-- Auto Gain -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-auto-gain-enable" class="demo-select" title="Enable/ Disable Auto Gain Control">
+                    <option value="1" selected="1">Enable</option>
+                    <option value="0">Disable</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" id="rgb-cam-auto-gain-db" class="demo-input-small" value="" placeholder="Gain dB"
+                    title="Analog Gain dB (0 -> 24 dB)" max="24"></input>
+                </td>
+                <td>
+                  <input type="number" id="rgb-cam-auto-gain-ceiling" class="demo-input-small" value=""
+                    placeholder="Gain Ceiling dB"
+                    title="Maximum Analog gain dB in full frame mode and bin2 mode (0 -> 24 dB)"></input>
+                </td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-auto-gain-set" title="Set Auto Gain">
+                    Gain</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              
+              <!-- Brightness -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-brightness" class="demo-select" title="AE Target Mean Level">
+                    <option value="0" selected>Level 0</option>
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                    <option value="3">Level 3</option>
+                  </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-brightness-set" title="Set Brightness Level">
+                    Brightness</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Gain Ceiling -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-gain-ceiling" class="demo-select"
+                    title="Maximum Analog gain in full frame mode and bin2 mode">
+                    <option value="2" selected>2X</option>
+                    <option value="4">4X</option>
+                    <option value="8">8X</option>
+                    <option value="16">16X</option>
+                  </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-gain-ceiling-set" title="Set Gain Ceiling">
+                    Gain</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Exposure -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-exposure-enable" class="demo-select" title="Enable/ Disable Auto Gain Control">
+                    <option value="1" >Enable</option>
+                    <option value="0" selected>Disable</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" id="rgb-cam-exposure-time" class="demo-input-small" value=""
+                    placeholder="Integration(us)" title="Integration time in microseconds (us)"></input>
+                </td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-exposure-set" title="Set Exposure">Exposure</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Frame Rate -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-frame-rate" class="demo-select">
+                    <option value="15">15 FPS</option>
+                    <option value="30" selected>30 FPS</option>
+                    <option value="45" disabled>45 FPS (Unsupported)</option>
+                    <option value="60" disabled>60 FPS (Unsupported)</option>
+                    <option value="120" disabled>120 FPS (Unsupported)</option>
+                  </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-frame-rate-set" title="Set Frame Rate">Set</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Frame Size -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-frame-size" class="demo-select">
+                    <option value="1">QQVGA 160x120</option>
+                    <option value="2" selected>QVGA 320x240</option>
+                    <option value="3">FULL 320x320</option>
+                    <!-- <option value="4" disabled>QVGA4BIT (Unsupported)</option> -->
+                  </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-frame-size-set" title="Set Frame Size">Set</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Pixel Format -->
+              <!-- <tr>
+                <td>
+                  <select id="rgb-cam-pixel-format" class="demo-select">
+                    <option value="1" selected>Grayscale</option>
+                    <option value="2">Bayer</option>
+                  </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-pixel-format-set" title="Set Pixel Format">Set</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr> -->
+              <!-- Video Mode -->
+              <tr>
+                <td>
+                  <select id="rgb-cam-video-mode" class="demo-select">
+                    <!-- <option value="0">Standby</option> -->
+                    <option value="1">Streaming 1</option>
+                    <option value="2" selected>Streaming 2</option>
+                    <option value="3" disabled>Streaming 3 (Unsupported)</option>
+                  </select>
+                </td>
+                <td>
+                  <input id="rgb-cam-video-frame-count" class="demo-input-small" value="1" placeholder="Frame count"
+                    type="number" title="Frame count" style="display: none;"></input>
+                </td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-video-mode-set" title="Set Operation Mode">Set</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Register Write -->
+              <tr>
+                <td>
+                  <input id="rgb-cam-reg-addr" class="demo-input-small" value="" placeholder="Reg Address"
+                    title=""></input>
+                </td>
+                <td>
+                  <input id="rgb-cam-reg-value" class="demo-input-small" value="" placeholder="Reg Value"></input>
+                </td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-reg-write" title="Register Write"> Write</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <!-- Register Read -->
+              <tr>
+                <td>
+                  <input id="rgb-cam-reg-addr-read" class="demo-input-small" value="" placeholder="Reg Address"></input>
+                </td>
+                <td> </td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-reg-read" title="Register Read"> Read</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="demo-button-small" id="rgb-cam-get-info" title="Show Camera State">Cam State</button>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+
             </table>
           </div>
         </div>
@@ -177,21 +390,22 @@
               <tr>
                 <td>Log Name (No extension)</td>
                 <td>
-                  <input name="port" id="flir-cam-setting-log-name" type="text"class="demo-input" value="" placeholder="Log Name" title="Log Name"></input>
+                  <input name="port" id="flir-cam-setting-log-name" type="text" class="demo-input" value=""
+                    placeholder="Log Name" title="Log Name"></input>
                 </td>
               </tr>
               <tr>
                 <td>Log Directory</td>
                 <td>
-                  <input name="port" id="flir-cam-setting-log-dir" class="demo-input" value="C:\" placeholder="Log Directory"
-                    title="Log Directory"></input>
+                  <input name="port" id="flir-cam-setting-log-dir" class="demo-input" value="C:\"
+                    placeholder="Log Directory" title="Log Directory"></input>
                 </td>
               </tr>
               <tr>
                 <td>Capture Interval (ms)</td>
                 <td>
-                  <input name="port" id="flir-cam-setting-capture-interval" class="demo-input" value="1000" placeholder="Capture Interval"
-                    title="Capture Interval"></input>
+                  <input name="port" id="flir-cam-setting-capture-interval" class="demo-input" value="1000"
+                    placeholder="Capture Interval" title="Capture Interval"></input>
                 </td>
               </tr>
               <tr>
@@ -212,26 +426,27 @@
         <button id="new-window-crashes-demo-toggle-3" class="js-container-target demo-toggle-button">RGB Camera Setting
         </button>
         <div class="demo-box">
-            <div class="demo-controls">
+          <div class="demo-controls">
             <table class="demo-table">
               <tr>
                 <td>Log Name (No extension)</td>
                 <td>
-                  <input name="port" id="rgb-cam-setting-log-name" type="text"class="demo-input" value="" placeholder="Log Name" title="Log Name"></input>
+                  <input name="port" id="rgb-cam-setting-log-name" type="text" class="demo-input" value=""
+                    placeholder="Log Name" title="Log Name"></input>
                 </td>
               </tr>
               <tr>
                 <td>Log Directory</td>
                 <td>
-                  <input name="port" id="rgb-cam-setting-log-dir" class="demo-input" value="C:\" placeholder="Log Directory"
-                    title="Log Directory"></input>
+                  <input name="port" id="rgb-cam-setting-log-dir" class="demo-input" value="C:\"
+                    placeholder="Log Directory" title="Log Directory"></input>
                 </td>
               </tr>
               <tr>
                 <td>Capture Interval (ms)</td>
                 <td>
-                  <input name="port" id="rgb-cam-setting-capture-interval" class="demo-input" value="1000" placeholder="Capture Interval"
-                    title="Capture Interval"></input>
+                  <input name="port" id="rgb-cam-setting-capture-interval" class="demo-input" value="1000"
+                    placeholder="Capture Interval" title="Capture Interval"></input>
                 </td>
               </tr>
               <tr>

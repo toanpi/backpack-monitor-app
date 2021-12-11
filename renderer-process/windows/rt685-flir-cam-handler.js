@@ -125,6 +125,7 @@ ipcRenderer.on("serial-data", (event, arg) => {
   if (arg.portID === "port-" + FLIR_CAM_PORT) {
     if (arg.data.hasOwnProperty("colorData")) {
       if(arg.data.camera == 'flir'){
+        rt685Core.showLog("[APP] Received packet from IR camera");
         processCamData(arg.data);
       }
     } else {

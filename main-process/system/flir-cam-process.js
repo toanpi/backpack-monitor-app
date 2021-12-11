@@ -236,7 +236,7 @@ function writeLog(width, height, raw, logPath) {
   let log = [];
   let now = new Date();
 
-  log.push(now.toDateString());
+  log.push(now.toISOString());
   log.push(width);
   log.push(height);
   log = log.concat(raw);

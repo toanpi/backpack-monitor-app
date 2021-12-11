@@ -37,7 +37,7 @@ function initialize () {
   function createWindow () {
     const windowOptions = {
       icon: path.join(__dirname, 'assets/app-icon/win/app_icon.ico'),
-      width: 1300,
+      width: 1400,
       minWidth: 1000,
       height: 900,
       title: app.getName(),

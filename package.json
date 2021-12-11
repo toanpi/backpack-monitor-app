@@ -1,7 +1,7 @@
 {
   "name": "backpack-network-app",
   "productName": "Backpack Network Monitor",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Backpack Network Monitor",
   "main": "main.js",
   "bin": "cli.js",
@@ -54,6 +54,7 @@
   "dependencies": {
     "ansi-to-html": "^0.7.1",
     "csv-writer": "^1.6.0",
+    "electron-link": "^0.6.0",
     "electron-log": "^2.2.14",
     "electron-reload": "^2.0.0-alpha.1",
     "electron-settings": "^3.0.7",

@@ -153,6 +153,7 @@
   border-color: var(--color-border);
 }
 
+
 .demo-select{
   align-self: flex-start;
   margin-right: 1em;
@@ -161,8 +162,11 @@
   font: inherit;
   font-size: 1.2em;
   padding: .4em 1.2em;
-  color: hsl(222, 53%, 50%);
+  /* color: hsl(222, 53%, 50%); */
+  color: inherit;
+  /* color: var(--color-border); */
   background-color: transparent;
+  width: 100%;
 }
 .demo-select:focus {
   outline: none;
@@ -204,6 +208,50 @@
   border-color: hsl(0,0%,80%);
   background-color: white;
 }
+
+.demo-input-small {
+  /* flex: 1; */
+  border: 2px solid var(--color-border);
+  /* border: 2px solid; */
+  border-radius: 4px;
+  font: inherit;
+  font-size: 1.2em;
+  padding: .4em 0.1em;
+  color: inherit;
+  background-color: transparent;
+  /* width: 25%; */
+  width: 100%;
+  border-color: var(--color-border);
+  /* border-color: hsl(0,0%,80%); */
+}
+
+.demo-button-small {
+  align-self: flex-start;
+  /* margin-right: 1em; */
+  border: 2px solid;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 1.2em;
+  padding: .4em 0.1em;
+  color: inherit;
+  background-color: transparent;
+  /* width: 20%; */
+  width: 100%;
+}
+
+.demo-input-small:focus {
+  outline: none;
+  border-color: hsl(0,0%,80%);
+  background-color: white;
+}
+.demo-button-small:focus {
+  outline: none;
+  background-color: white;
+}
+.demo-button-small:active {
+  border-color: var(--color-border);
+}
+
 
 .demo-table { 
   border : none;
